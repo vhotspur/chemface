@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<project 
+	name="ChemFace"
+    default="all"
+	basedir="."
+>
+	<property name="distname" value="chemface" />
+	<property name="distversion" value="0.1" />
+	<property name="distdir" value="dist" />
+	<property name="srcdir" value="." />
+	<property name="builddir" value="build" />
+	<property name="docsdir" value="gendocs" />
+	
+	<!-- computed properties -->
+	<property name="dist" value="${distname}-${distversion}" />
+	
+	
+	<!-- default target -->
+	<target name="all" depends="run" />
+	
+	<target name="compile" depends="init">
+		<javac 
+			srcdir="${srcdir}" 
+			destdir="${builddir}"
+		/>
+	</target>
+	
+	<!-- "init" creates directories needed for
+	building and packing dists -->
+	<target name="init">
+		<mkdir dir="${builddir}" />
+		<mkdir dir="${distdir}" />
+	</target>
+	
+	<target name="run" depends="compile">
+		<java classname="chemface.Chemface">
+			<classpath>
+				<pathelement location="${builddir}" />
+			</classpath>
+			<arg value="-h" />
+			<arg value="--help" />
+		</java>
+	</target>
+		
+	<target name="clean">
+		<delete dir="${builddir}" />
+	</target>
+	
+	<target name="dist" depends="init">
+		<tar destfile="${distdir}/${dist}.tar">
+			<tarfileset dir="." prefix="${dist}">				
+				<include name="build.xml" />
+				<include name="chemface.ottproj" />
+				<include name="Doxyfile" />
+			</tarfileset>
+			<tarfileset dir="." prefix="${dist}">
+				<include name="**/*.java" />
+			</tarfileset>
+		</tar>
+		<gzip destfile="${distdir}/${dist}.tar.gz" src="${distdir}/${dist}.tar"/>
+	</target>
+	
+	<target name="docs" depends="initdocs">
+		<javadoc
+			sourcepath="${srcdir}"
+			destdir="${docsdir}"
+			packagenames="chemface.*"
+			access="private"
+		/>
+		<exec executable="doxygen" />
+	</target>
+
+	<target name="initdocs">
+		<mkdir dir="${docsdir}" />
+	</target>
+</project>
