@@ -15,6 +15,7 @@ public enum  Element {
 	OXYGEN("O"),
 	NITROGEN("N"),
 	IODINE("I"),
+	HYDROGEN("H"),
 	;
 	private String name;
 	Element(String n) {
@@ -124,6 +125,8 @@ public int yylex() {
 			return yylexElement(Element.NITROGEN, 1);
 		case 'I' :
 			return yylexElement(Element.IODINE, 1);
+		case 'H' :
+			return yylexElement(Element.HYDROGEN, 1);
 		case '(' :
 			eat(1);
 			return SmilesParser.TOK_BRANCH_START;
@@ -139,6 +142,8 @@ public int yylex() {
 		case '#' :
 			eat(1);
 			return SmilesParser.TOK_BOND_TRIPLE;
+		case '\'' : 
+			return yylexLiteral();
 		default :
 			return SmilesParser.TOK_ERROR;
 	}
@@ -155,6 +160,27 @@ private int yylexElement(Element el, int charsEaten) {
 	eat(charsEaten);
 	ctx.element = el;
 	return SmilesParser.TOK_ELEM_ORGANIC;
+}
+
+private int yylexLiteral() {
+	eat(1);
+	try {
+		int i = 0;
+		while (formulae.charAt(i) != '\'') {
+			i++;
+		}
+		String s = formulae.substring(0, i);
+		if (s.length() == 0) {
+			// get the next one
+			return yylex();
+		}
+		ctx.node = new PositionedNode(new Node(s, RenderingOptions.getFont()));
+		eat(i+1);
+		return SmilesParser.TOK_ELEM_CUSTOM;
+	} catch (IndexOutOfBoundsException e) {
+		yyerror("syntax error, missing ending apostrophe");
+		return SmilesParser.TOK_ERROR;
+	}
 }
 
 /**

@@ -9,18 +9,9 @@
 %token TOK_BOND_TRIPLE
 %token<SmilesLexer.Context> TOK_ELEM_ORGANIC
 %token<SmilesLexer.Context> TOK_ELEM_OTHER
+%token<SmilesLexer.Context> TOK_ELEM_CUSTOM
 %token TOK_BRANCH_START
 %token TOK_BRANCH_END
-%token TOK_ELEM_BORON
-%token TOK_ELEM_CARBON
-%token TOK_ELEM_NITROGEN
-%token TOK_ELEM_OXYGEN
-%token TOK_ELEM_PHOSPORUS
-%token TOK_ELEM_SULFUR
-%token TOK_ELEM_FLUORINE
-%token TOK_ELEM_CHLORINE
-%token TOK_ELEM_BROMINE
-%token TOK_ELEM_IODINE
 %token TOK_ERROR
 
 %type<SmilesLexer.Context> formula bondedsubformula formula_without_branches branch branches element bond;
@@ -190,6 +181,9 @@ element:
 			$1.element.getName(),
 			RenderingOptions.getFont());
 		$$.node = new PositionedNode(node);
+	}}
+	| TOK_ELEM_CUSTOM {{
+		$$.node = $1.node;
 	}}
 	;
 

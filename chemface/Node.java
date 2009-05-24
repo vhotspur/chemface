@@ -90,11 +90,6 @@ public void render() {
 	java.awt.Graphics2D gr = image.createGraphics();
 	
 	/*
-	 * Prepare the canvas
-	 * 
-	 */
-	gr.setBackground(java.awt.Color.GRAY);
-	/*
 	 * Set antialising (http://mindprod.com/jgloss/antialiasing.html)
 	 * 
 	 */
@@ -130,7 +125,7 @@ public void render() {
 		 * 
 		 */
 		gr.setFont(font_);	
-		gr.setColor(java.awt.Color.BLUE);	
+		gr.setColor(java.awt.Color.BLACK);
 		char c = descr_.charAt(i);
 		
 		/*
@@ -264,7 +259,7 @@ protected int renderNormalText(String text, java.awt.Graphics2D graphics, int x,
  */
 protected int renderSubscript(String text, java.awt.Graphics2D graphics, int x, int y) {
 	graphics.setFont(getSubscriptFont(graphics.getFont()));
-	graphics.setColor(java.awt.Color.RED);
+	//graphics.setColor(java.awt.Color.RED);
 	java.awt.FontMetrics metrics = graphics.getFontMetrics();
 	graphics.drawString(text, x, y + getSubscriptBaselineShift(graphics.getFont()));
 	return metrics.stringWidth(text);	
@@ -282,7 +277,7 @@ protected int renderSubscript(String text, java.awt.Graphics2D graphics, int x, 
  */
 protected int renderSuperscript(String text, java.awt.Graphics2D graphics, int x, int y) {
 	graphics.setFont(getSuperscriptFont(graphics.getFont()));
-	graphics.setColor(java.awt.Color.ORANGE);
+	//graphics.setColor(java.awt.Color.ORANGE);
 	java.awt.FontMetrics metrics = graphics.getFontMetrics();
 	graphics.drawString(text, x, y + getSuperscriptBaselineShift(graphics.getFont()));
 	return metrics.stringWidth(text);	
