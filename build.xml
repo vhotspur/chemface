@@ -24,7 +24,7 @@
 	
 	
 	<!-- default target -->
-	<target name="all" depends="run" />
+	<target name="all" depends="compile" />
 	
 	<target name="compile" depends="init">
 		<echo message="Generating parser using Bison..." />
@@ -51,7 +51,7 @@
 		<mkdir dir="${distdir}" />
 	</target>
 	
-	<target name="run" depends="compile">
+	<target name="samples" depends="compile">
 		<java classname="chemface.Chemface">
 			<classpath>
 				<pathelement location="${builddir}" />
@@ -59,8 +59,38 @@
 			</classpath>
 			<arg value="-v" />
 			<arg value="-o" />
-			<arg value="out.png" />
+			<arg value="CO2.png" />
 			<arg value="O=C=O" />
+		</java>
+		<java classname="chemface.Chemface">
+			<classpath>
+				<pathelement location="${builddir}" />
+				<path refid="classpath" />
+			</classpath>
+			<arg value="-v" />
+			<arg value="-o" />
+			<arg value="H2O.png" />
+			<arg value="HOH" />
+		</java>
+		<java classname="chemface.Chemface">
+			<classpath>
+				<pathelement location="${builddir}" />
+				<path refid="classpath" />
+			</classpath>
+			<arg value="-v" />
+			<arg value="-o" />
+			<arg value="metan.png" />
+			<arg value="'CH4'" />
+		</java>
+		<java classname="chemface.Chemface">
+			<classpath>
+				<pathelement location="${builddir}" />
+				<path refid="classpath" />
+			</classpath>
+			<arg value="-v" />
+			<arg value="-o" />
+			<arg value="but1en.png" />
+			<arg value="'CH2'='CH''CH2''CH3'" />
 		</java>
 	</target>
 		
