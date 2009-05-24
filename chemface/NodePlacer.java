@@ -114,5 +114,16 @@ public void dumpPositions() {
 	System.out.println(result.toString());
 }
 
+public void copyNodePositionsToEdges() {
+	for (PositionedNode node : vertexSet()) {
+		for (PositionedNode other : vertexSet()) {
+			if (!containsEdge(node, other)) {
+				continue;
+			}
+			getEdge(node, other).setNodes(node, other);
+		}
+	}
+}
+
 
 }

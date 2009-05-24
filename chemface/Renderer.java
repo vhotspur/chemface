@@ -26,10 +26,25 @@ public void render() {
 			(int)imageDimension.getWidth(), (int)imageDimension.getHeight(),
 			java.awt.image.BufferedImage.TYPE_4BYTE_ABGR);
 	java.awt.Graphics2D gr = image_.createGraphics();
+	gr.addRenderingHints(new java.awt.RenderingHints(
+		java.awt.RenderingHints.KEY_ANTIALIASING,
+		java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
+	gr.setRenderingHint(
+		java.awt.RenderingHints.KEY_TEXT_ANTIALIASING,
+		java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+	gr.setBackground(new java.awt.Color(0, 0, 0, Node.alphaChannelFullyTransparent));
+	
+	// draw the bonds
+	for (Bond bond : nodes.edgeSet()) {
+		bond.render(gr);
+	}
 	
 	for (PositionedNode node : nodes.vertexSet()) {
-		int x = (int)(node.getX() - node.getImageDimension().getWidth()/2.0);
-		int y = (int)(node.getY() - node.getImageDimension().getHeight()/2.0);
+		int width = (int)node.getImageDimension().getWidth();
+		int height = (int)node.getImageDimension().getHeight();
+		int x = (int)(node.getX() - width/2.0);
+		int y = (int)(node.getY() - height/2.0);
+		gr.clearRect(x, y, width, height);
 		gr.drawImage(node.getImage(), x, y, null);
 	}
 }

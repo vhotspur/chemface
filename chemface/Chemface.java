@@ -39,6 +39,7 @@ public static void main(String[] args) {
 	placer.addEdge(n, n3, bond2);
 	
 	placer.findOptimalPlacement();
+	placer.copyNodePositionsToEdges();
 	placer.dumpPositions();
 
 	Renderer renderer = new Renderer(placer);
