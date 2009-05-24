@@ -3,10 +3,18 @@ Tree
     Item build.xml
     Item Doxyfile
     Item chemface/Chemface.java
-    Item chemface/Node.java
-    Item chemface/RenderingOptions.java
-    Item chemface/PositionedNode.java
-    Item chemface/NodePlacer.java
-    Item chemface/MathGraph.java
-    Item chemface/Bond.java
+    Folder Parser
+        Item chemface/SmilesParser.y
+        Item chemface/SmilesLexer.java
+    /Folder
+    Folder Nodes
+        Item chemface/Node.java
+        Item chemface/NodePlacer.java
+        Item chemface/Bond.java
+        Item chemface/PositionedNode.java
+    /Folder
+    Folder Rendering
+        Item chemface/Renderer.java
+        Item chemface/RenderingOptions.java
+    /Folder
 /Tree
