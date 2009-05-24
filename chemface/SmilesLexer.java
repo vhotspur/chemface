@@ -25,6 +25,7 @@ public class Context {
 	public Bond bond = null;
 	public Bond hookEdge = null;
 	public Element element = null;
+	public java.util.Vector<Context> branch = null;
 	public Context makeIndependent() {
 		Context cl = new Context();
 		if (node != null) {
@@ -41,6 +42,12 @@ public class Context {
 		}
 		if (bond != null) {
 			cl.bond = (Bond)bond.clone();
+		}
+		if (branch != null) {
+			cl.branch = new java.util.Vector<Context>();
+			for (Context c : branch) {
+				cl.branch.add(c.makeIndependent());
+			}
 		}
 		cl.element = element;
 		

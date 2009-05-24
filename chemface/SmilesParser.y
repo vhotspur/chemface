@@ -23,7 +23,7 @@
 %token TOK_ELEM_IODINE
 %token TOK_ERROR
 
-%type<SmilesLexer.Context> formula bondedsubformula formula_without_branches branch element bond;
+%type<SmilesLexer.Context> formula bondedsubformula formula_without_branches branch branches element bond;
 
 %define parser_class_name "SmilesParser"
 %define stype "SmilesLexer.Context"
@@ -75,10 +75,12 @@ formula:
 		$$.hookEdge = $1.hookEdge;
 		$$.node = $1.node;
 	}}
-	| formula branch bond formula_without_branches {{
-		joinGraphs($1.graph, $2.graph,
-			$1.lastNode, $2.firstNode,
-			$2.hookEdge);
+	| formula branches bond formula_without_branches {{
+		for (SmilesLexer.Context c : $2.branch) {
+			joinGraphs($1.graph, c.graph,
+				$1.lastNode, c.firstNode,
+				c.hookEdge);
+		}
 		joinGraphs($1.graph, $4.graph,
 			$1.lastNode, $4.firstNode,
 			$3.bond);
@@ -86,10 +88,12 @@ formula:
 		$$.firstNode = $1.firstNode;
 		$$.lastNode = $3.lastNode;
 	}}
-	| formula branch formula_without_branches {{
-		joinGraphs($1.graph, $2.graph,
-			$1.lastNode, $2.firstNode,
-			$2.hookEdge);
+	| formula branches formula_without_branches {{
+		for (SmilesLexer.Context c : $2.branch) {
+			joinGraphs($1.graph, c.graph,
+				$1.lastNode, c.firstNode,
+				c.hookEdge);
+		}
 		joinGraphs($1.graph, $3.graph,
 			$1.lastNode, $3.firstNode,
 			new Bond(Bond.Kind.SINGLE));
@@ -137,6 +141,16 @@ bondedsubformula:
 		$$.lastNode = $2.lastNode;
 	}}
 	
+branches:
+	branches branch {{
+		$1.branch.add($2);
+		$$.branch = $1.branch;
+	}}
+	| branch {{
+		$$.branch = new java.util.Vector<SmilesLexer.Context>();
+		$$.branch.add($1);
+	}}
+	;
 
 branch:
 	TOK_BRANCH_START bondedsubformula TOK_BRANCH_END {{

@@ -5,7 +5,7 @@ public class Chemface {
 
 public static void main(String[] args) throws java.io.IOException {
 	SmilesLexer lexer = new SmilesLexer();
-	lexer.setSource("CCCC");
+	lexer.setSource("CC(C)(C)C");
 	
 	SmilesParser parser = new SmilesParser(lexer);
 	parser.errorVerbose = true;
