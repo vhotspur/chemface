@@ -13,7 +13,8 @@ private java.awt.Font font_;
 /// Rendered image
 private java.awt.image.BufferedImage image_;
 
-private static final int alphaChannelFullyTransparent = 0;
+public static final int alphaChannelFullyTransparent = 0;
+protected static final int imageMargin = 15;
 
 /**
  * Constructs node from a descriptive string.
@@ -64,7 +65,10 @@ public void render() {
 	 * 
 	 */
 	java.awt.image.BufferedImage image = 
-		new java.awt.image.BufferedImage((int)(width*1.0), height*3, java.awt.image.BufferedImage.TYPE_4BYTE_ABGR);
+		new java.awt.image.BufferedImage(
+			width + imageMargin*2 + 2, 
+			height*3 + imageMargin*2 + 2, 
+			java.awt.image.BufferedImage.TYPE_4BYTE_ABGR);
 	java.awt.Graphics2D gr = image.createGraphics();
 	
 	/*
@@ -93,9 +97,9 @@ public void render() {
 	int i = 0;
 	int len = descr_.length();
 	// y-axis of the text
-	int baseline = height*2;
+	int baseline = height*2 + imageMargin;
 	// x-axis of the text
-	int shift = 0;
+	int shift = imageMargin;
 	// extra shift, used when drawing subscripts
 	int aboutToShift = 0;
 	// remember these for correct count of image height
@@ -207,7 +211,11 @@ public void render() {
 	// FIXME - these formulaes for counting font height are not very accurate
 	// and could be rethinked (if time allows)
 	java.awt.Rectangle trim = getTrimRectangle(image);
-	image_ = image.getSubimage(trim.x, trim.y, trim.width, trim.height);
+	image_ = image.getSubimage(
+		trim.x - imageMargin, 
+		trim.y - imageMargin,
+		trim.width + 2*imageMargin, 
+		trim.height + 2*imageMargin);
 }
 
 /**
@@ -355,9 +363,9 @@ public static java.awt.Rectangle getTrimRectangle(java.awt.image.BufferedImage i
 	int height = image.getHeight();
 	
 	int left = 0;
-	int right = width;
+	int right = width - 1;
 	int top = 0;
-	int bottom = height;
+	int bottom = height - 1;
 	
 	for (int x = 0; x < width; x++) {
 		boolean hasOpaque = false;
@@ -413,7 +421,7 @@ public static java.awt.Rectangle getTrimRectangle(java.awt.image.BufferedImage i
 		}
 	}
 	System.out.printf("%d\n", left);
-	return new java.awt.Rectangle(left, top, right - left, bottom - top);
+	return new java.awt.Rectangle(left, top, right - left + 1, bottom - top + 1);
 }
 
 public static boolean isPixelFullyTransparent(
