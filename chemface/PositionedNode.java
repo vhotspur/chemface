@@ -21,6 +21,11 @@ public PositionedNode(Node n) {
 	position = new java.awt.geom.Point2D.Double(0.0, 0.0);
 }
 
+public Object clone() {
+	PositionedNode n = new PositionedNode((Node)super.clone());
+	return n;
+}
+
 public boolean isFixed() {
 	return fixed;
 }

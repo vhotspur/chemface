@@ -4,7 +4,9 @@ public class SmilesLexer implements SmilesParser.Lexer {
 
 public enum  Element {
 	CARBON("C"),
-	OXYGEN("O")
+	OXYGEN("O"),
+	NITROGEN("N"),
+	IODINE("I"),
 	;
 	private String name;
 	Element(String n) {
@@ -16,10 +18,34 @@ public enum  Element {
 }
 
 public class Context {
-	public PositionedNode node;
-	public PositionedNode connectingNode;
-	public NodePlacer subgraph;
-	public Element element;
+	public PositionedNode node = null;
+	public NodePlacer graph = null;
+	public PositionedNode firstNode = null;
+	public PositionedNode lastNode = null;
+	public Bond bond = null;
+	public Bond hookEdge = null;
+	public Element element = null;
+	public Context makeIndependent() {
+		Context cl = new Context();
+		if (node != null) {
+			cl.node = (PositionedNode)node.clone();
+		}
+		if (graph != null) {
+			cl.graph = (NodePlacer)graph.clone();
+		}
+		if (firstNode != null) {
+			cl.firstNode = (PositionedNode)firstNode.clone();
+		}
+		if (lastNode != null) {
+			cl.lastNode = (PositionedNode)lastNode.clone();
+		}
+		if (bond != null) {
+			cl.bond = (Bond)bond.clone();
+		}
+		cl.element = element;
+		
+		return cl;
+	}
 }
 
 private StringBuffer formulae;
@@ -45,6 +71,16 @@ public int yylex() {
 			return yylexElement(Element.CARBON, 1);
 		case 'O' :
 			return yylexElement(Element.OXYGEN, 1);
+		case 'N' :
+			return yylexElement(Element.NITROGEN, 1);
+		case 'I' :
+			return yylexElement(Element.IODINE, 1);
+		case '(' :
+			formulae.delete(0, 1);
+			return SmilesParser.TOK_BRANCH_START;
+		case ')' :
+			formulae.delete(0, 1);
+			return SmilesParser.TOK_BRANCH_END;
 		default :
 			return SmilesParser.TOK_ERROR;
 	}
@@ -58,7 +94,7 @@ private int yylexElement(Element el, int charsEaten) {
 
 
 public Context getLVal() {
-	return ctx;
+	return ctx.makeIndependent();
 }
 
 public void yyerror (String s) {

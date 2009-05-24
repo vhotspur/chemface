@@ -5,10 +5,10 @@ public class Chemface {
 
 public static void main(String[] args) throws java.io.IOException {
 	SmilesLexer lexer = new SmilesLexer();
-	lexer.setSource("COC");
+	lexer.setSource("CC(O)CC");
 	
 	SmilesParser parser = new SmilesParser(lexer);
-	//parser.setDebugLevel(1);
+	parser.setDebugLevel(1);
 	boolean parseOkay = parser.parse();
 	if (!parseOkay) {
 		System.out.println("Parsing went gaga!");

@@ -4,7 +4,7 @@ package chemface;
  * Representation of a single node in the chemical structure.
  * 
  */
-public class Node {
+public class Node implements Cloneable {
 
 /// Node description
 private String descr_;
@@ -23,6 +23,7 @@ protected static final int imageMargin = 15;
  * 
  */
 public Node(String s, java.awt.Font font) {
+	System.out.printf("Creating node `%s'...\n", s);
 	descr_ = s;
 	font_ = font;
 	image_ = null;
@@ -32,6 +33,10 @@ public Node(Node n) {
 	descr_ = n.descr_;
 	font_ = n.font_;
 	image_ = null;
+}
+
+public Object clone() {
+	return new Node(this);
 }
 
 public String toString() {

@@ -1,11 +1,16 @@
 package chemface;
 
-public class Bond {
+public class Bond implements Cloneable {
 
 private PositionedNode start = null;
 private PositionedNode end = null;
 
 public Bond() {
+}
+
+public Object clone() {
+	return new Bond();
+	// FIXME
 }
 
 public double optimalLength() {
