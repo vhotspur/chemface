@@ -3,9 +3,9 @@ package chemface;
 public class NodePlacer extends org.jgrapht.graph.SimpleGraph<PositionedNode, Bond> implements Cloneable {
 
 private final double randomShiftCoefficient = 5.0;
-private final double hookeConstant = 0.5;
-private final double coloumbConstant = 0.8;
-private final double timeStep = 0.1;
+private final double hookeConstant = 0.01;
+private final double coloumbConstant = 100;
+private final double timeStep = 0.9;
 private final double damping = 0.9;
 private final double energyEpsilon = 0.0001;
 
