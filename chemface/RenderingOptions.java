@@ -23,6 +23,14 @@ public static synchronized RenderingOptions getInstance() {
 	return instance_;
 }
 
+public static java.awt.Font getFont() {
+	return new java.awt.Font("Arial", java.awt.Font.PLAIN, 90);
+}
+
+public static double getBondLength() {
+	return 250;
+}
+
 /**
  * Constructor, currently does nothing.
  * 

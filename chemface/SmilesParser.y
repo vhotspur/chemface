@@ -152,13 +152,13 @@ element:
 	TOK_ELEM_ORGANIC {{
 		Node node = new Node(
 			$1.element.getName(),
-			new java.awt.Font("Arial", java.awt.Font.PLAIN, 160));
+			RenderingOptions.getFont());
 		$$.node = new PositionedNode(node);
 	}}
 	| TOK_ELEM_OTHER {{
 		Node node = new Node(
 			$1.element.getName(),
-			new java.awt.Font("Arial", java.awt.Font.PLAIN, 160));
+			RenderingOptions.getFont());
 		$$.node = new PositionedNode(node);
 	}}
 	;

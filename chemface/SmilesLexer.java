@@ -110,6 +110,7 @@ public Context getLVal() {
 }
 
 public void yyerror (String s) {
+	System.out.println(s);
 }
 
 

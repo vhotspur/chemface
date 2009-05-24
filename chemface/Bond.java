@@ -59,7 +59,7 @@ public Object clone() {
 }
 
 public double optimalLength() {
-	return 400.0;
+	return RenderingOptions.getBondLength();
 }
 
 public void setNodes(PositionedNode start, PositionedNode end) {
