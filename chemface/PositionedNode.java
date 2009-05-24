@@ -5,7 +5,7 @@ public class PositionedNode extends Node {
 public final double mass = 10.0;
 public final double charge = 5.0;
 public java.awt.geom.Point2D.Double position;
-public java.awt.geom.Point intPosition = null;
+public java.awt.Point intPosition = null;
 private java.awt.geom.Point2D.Double newPosition = null;
 private java.awt.geom.Point2D.Double gravityForceVector = null;
 private java.awt.geom.Point2D.Double velocityVector = null;
@@ -42,7 +42,7 @@ public void setNewPosition(java.awt.geom.Point2D.Double newPosition) {
 	this.newPosition = newPosition;
 }
 
-public void setPosition(java.awt.geom.Point newPosition) {
+public void setPosition(java.awt.Point newPosition) {
 	this.intPosition = newPosition;
 }
 
