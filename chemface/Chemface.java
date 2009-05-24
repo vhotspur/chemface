@@ -39,6 +39,7 @@ public static void main(String[] args) {
 	
 	placer.findOptimalPlacement();
 	placer.dumpPositions();
+
 }
 
 

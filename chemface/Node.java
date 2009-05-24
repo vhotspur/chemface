@@ -343,6 +343,10 @@ public java.awt.image.BufferedImage getImage() {
 	return image_;
 }
 
+public java.awt.Dimension getImageDimension() {
+	return new java.awt.Dimension(image_.getWidth(), image_.getHeight());
+}
+
 
 } // class Node
 

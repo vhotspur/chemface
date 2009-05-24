@@ -2,8 +2,10 @@ package chemface;
 
 public class PositionedNode extends Node {
 
-
+public final double mass = 10.0;
+public final double charge = 5.0;
 public java.awt.geom.Point2D.Double position;
+public java.awt.geom.Point intPosition = null;
 private java.awt.geom.Point2D.Double newPosition = null;
 private java.awt.geom.Point2D.Double gravityForceVector = null;
 private java.awt.geom.Point2D.Double velocityVector = null;
@@ -40,6 +42,10 @@ public void setNewPosition(java.awt.geom.Point2D.Double newPosition) {
 	this.newPosition = newPosition;
 }
 
+public void setPosition(java.awt.geom.Point newPosition) {
+	this.intPosition = newPosition;
+}
+
 public void setVelocity(java.awt.geom.Point2D.Double newVelocity) {
 	this.velocityVector = newVelocity;
 }
@@ -63,6 +69,9 @@ public void addGravityForce(java.awt.geom.Point2D.Double vector) {
 }
 
 public void recountPositionAndVelocity(double damping, double timestep) {
+	if (isFixed()) {
+		return;
+	}
 	this.velocityVector = new java.awt.geom.Point2D.Double(
 		(this.velocityVector.getX() + timestep * gravityForceVector.getX()) * damping,
 		(this.velocityVector.getY() + timestep * gravityForceVector.getY()) * damping);
@@ -73,7 +82,7 @@ public void recountPositionAndVelocity(double damping, double timestep) {
 }
 
 public double getKineticEnergy() {
-	return 10.0 * this.velocityVector.distanceSq(0., 0.);
+	return 0.5 * this.mass * this.velocityVector.distanceSq(0., 0.);
 }
 
 public void setNewPositionFromGravity() {

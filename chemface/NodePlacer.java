@@ -3,27 +3,31 @@ package chemface;
 public class NodePlacer extends org.jgrapht.graph.SimpleGraph<PositionedNode, Bond> {
 
 private final double randomShiftCoefficient = 5.0;
-private final double gravityCoefficient = 0.5;
+private final double hookeConstant = 0.5;
+private final double coloumbConstant = 0.8;
+private final double timeStep = 0.1;
+private final double damping = 0.9;
+private final double energyEpsilon = 0.0001;
 
 public NodePlacer() {
 	super(Bond.class);
 }
 
 public double getCoulombRepulsion(double r, double q1, double q2) {
-	return 0.1 * q1 * q2 / (r*r);
+	return coloumbConstant * q1 * q2 / (r*r);
 }
 
 public java.awt.geom.Point2D.Double getCoulombForceVector(PositionedNode fixed, 
 		PositionedNode moving) {
 	double dist = fixed.distance(moving);
-	double repuls = getCoulombRepulsion(dist, 10., 10.);
+	double repuls = getCoulombRepulsion(dist, fixed.charge, moving.charge);
 	double dx = moving.getX() - fixed.getX();
 	double dy = moving.getY() - fixed.getY();
 	return new java.awt.geom.Point2D.Double(repuls*dx/dist, repuls*dy/dist);
 }
 
 public double getHookeAttraction(double currentDistance, double optimalDistance) {
-	return - 0.01 * (optimalDistance - currentDistance);
+	return hookeConstant * (optimalDistance - currentDistance);
 }
 
 public java.awt.geom.Point2D.Double getHookeForceVector(PositionedNode fixed, 
@@ -69,11 +73,11 @@ public void findOptimalPlacement() {
 		totalKineticEnergy = 0.0;
 		for (PositionedNode node : vertexSet()) {
 			//System.out.printf("another node!\n");
-			node.recountPositionAndVelocity(0.2, 0.01);
+			node.recountPositionAndVelocity(damping, timeStep);
 			totalKineticEnergy += node.getKineticEnergy();
 		}
 		//System.out.printf("totalKineticEnergy=%f\n", totalKineticEnergy);
-	} while (totalKineticEnergy > 0.00001);
+	} while (totalKineticEnergy > energyEpsilon);
 }
 
 protected void shiftAllRandomly() {
@@ -93,16 +97,21 @@ public void dumpPositions() {
 	java.util.Set<PositionedNode> vertices = vertexSet();
 	StringBuilder result = new StringBuilder("");
 	for (PositionedNode node : vertices) {
-		result.append(String.format("[%6.2f:%6.2f] %s\n",
-			node.position.getX(), node.position.getY(),
-			node.toString()));
+		result.append(String.format("%-3s (%6.2f, %6.2f)::",
+			node.toString(), node.getX(), node.getY()));
+		for (PositionedNode other : vertexSet()) {
+			if (!containsEdge(node, other)) {
+				continue;
+			}
+			double optDist = getEdge(node, other).optimalLength();
+			double dist = node.distance(other);
+			result.append(String.format(" %3s(%6.2f %6.2f) ",
+				other.toString(),
+				dist, optDist));
+		}
+		result.append("\n");
 	}
 	System.out.println(result.toString());
-}
-
-public double getGravity(java.awt.geom.Point2D.Double a, java.awt.geom.Point2D.Double b) {
-	double d = a.distance(b);
-	return 0.00001/(d*d);
 }
 
 
