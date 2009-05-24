@@ -1,8 +1,15 @@
 package chemface;
 
+/**
+ * Main class of the Chemface.
+ * 
+ */
 public class Chemface {
 
-
+/**
+ * Main.
+ * 
+ */
 public static void main(String[] args) throws java.io.IOException {
 	SmilesLexer lexer = new SmilesLexer();
 	lexer.setSource("CC(C)(C)C");
@@ -20,7 +27,7 @@ public static void main(String[] args) throws java.io.IOException {
 	NodePlacer placer = parser.getNodes();
 	
 	placer.findOptimalPlacement();
-	placer.copyNodePositionsToEdges();
+	placer.copyNodesToEdges();
 	placer.dumpPositions();
 
 	Renderer renderer = new Renderer(placer);

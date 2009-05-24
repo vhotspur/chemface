@@ -1,42 +1,34 @@
 package chemface;
 
 /**
- * Wrapper for rendering options. This class is a singleton.
+ * Wrapper for rendering options.
  * 
  */
 public class RenderingOptions {
 
-/// Pointer to the (single) existing instance of RenderingOptions
-private static volatile RenderingOptions instance_ = null;
-/// Number of references to the instance
-private static int instanceX_ = 0;
 
 /**
- * Returns instance of RenderingOptions.
- * @return Instance of RenderingOptions.
+ * Tells the font to use for rendering.
  * 
  */
-public static synchronized RenderingOptions getInstance() {
-	if (instanceX_++ == 0) {
-		instance_ = new RenderingOptions();
-	}
-	return instance_;
-}
-
 public static java.awt.Font getFont() {
 	return new java.awt.Font("Arial", java.awt.Font.PLAIN, 90);
 }
 
+/**
+ * Tells the bond length.
+ * 
+ */
 public static double getBondLength() {
 	return 250;
 }
 
 /**
- * Constructor, currently does nothing.
+ * Tells the bond width.
  * 
  */
-protected RenderingOptions() {
-	
+public static double getBondWidth() {
+	return 5.0;
 }
 
 

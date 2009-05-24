@@ -82,11 +82,15 @@
 	
 	<target name="docs" depends="initdocs">
 		<javadoc
-			sourcepath="${srcdir}"
 			destdir="${docsdir}"
 			packagenames="chemface.*"
-			access="private"
-		/>
+			access="private">
+			<fileset dir="${srcdir}" defaultexcludes="yes" />
+			<fileset dir="${builddir}" defaultexcludes="yes" />
+		</javadoc>
+
+		<echo message="Generating Doxygen documentation" />
+		<echo message=" (that is the documentation that looks better)" />
 		<exec executable="doxygen" />
 	</target>
 

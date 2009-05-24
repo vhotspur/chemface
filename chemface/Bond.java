@@ -1,22 +1,39 @@
 package chemface;
 
+/**
+ * Representation of a bond in a molecule.
+ * 
+ */
 public class Bond implements Cloneable {
 
+/// Start node.
 private PositionedNode start = null;
+/// End node.
 private PositionedNode end = null;
 
-private static final float lineWidth = (float)5.0;
-
+/**
+ * Bond kind.
+ * 
+ */
 public enum Kind {
+	/// Single bond
 	SINGLE,
+	/// Double bond
 	DOUBLE,
-	TRIPLE,
-	AROMATIC
+	/// Triple bond
+	TRIPLE
 };
 
+/// Bond kind.
 private Kind kind;
 
-// http://www.java2s.com/Code/Java/2D-Graphics-GUI/CustomStrokes.htm
+/**
+ * Double stroke.
+ * 
+ * Thanks for the guy who wrote this tutorial:
+ * http://www.java2s.com/Code/Java/2D-Graphics-GUI/CustomStrokes.htm
+ * 
+ */
 class DoubleStroke implements java.awt.Stroke {
 	java.awt.BasicStroke stroke1, stroke2; // the two strokes to use
 
@@ -34,6 +51,12 @@ class DoubleStroke implements java.awt.Stroke {
 	}
 }
 
+/**
+ * Triple stroke.
+ * 
+ * @see DoubleStroke
+ * 
+ */
 class TripleStroke implements java.awt.Stroke {
 	java.awt.BasicStroke stroke1, stroke2, stroke3;
 
@@ -50,29 +73,62 @@ class TripleStroke implements java.awt.Stroke {
 	}
 }
 
+/**
+ * Constructor.
+ * 
+ * @param kind Bond kind
+ * 
+ */
 public Bond(Kind kind) {
 	this.kind = kind;
 }
 
+/**
+ * Clones the bond.
+ * 
+ */
 public Object clone() {
 	return new Bond(kind);
 }
 
+/**
+ * Tells optimal length of the bond.
+ * 
+ * Currently, all kinds returns the same value.
+ * 
+ * @see RenderingOptions#getBondLength
+ * 
+ */
 public double optimalLength() {
 	return RenderingOptions.getBondLength();
 }
 
+/**
+ * Sets starting and ending node.
+ * 
+ * @param start Starting node
+ * @param end Ending node
+ * 
+ */
 public void setNodes(PositionedNode start, PositionedNode end) {
 	this.start = start;
 	this.end = end;
 }
 
+/**
+ * Renders the bond to given graphics context.
+ * 
+ * @param gr Graphics where to draw into
+ * 
+ */
 public void render(java.awt.Graphics2D gr) {
 	int startX = (int) start.getX();
 	int startY = (int) start.getY();
 	int endX = (int) end.getX();
 	int endY = (int) end.getY();
 	gr.setColor(new java.awt.Color(0, 0, 0));
+	
+	float lineWidth = (float)RenderingOptions.getBondWidth();
 	
 	java.awt.Stroke stroke;
 	switch (kind) {
@@ -92,8 +148,7 @@ public void render(java.awt.Graphics2D gr) {
 			stroke = new java.awt.BasicStroke((float)0.0);
 	}
 	gr.setStroke(stroke);
-	gr.drawLine(startX, startY, endX, endY);
-	
+	gr.drawLine(startX, startY, endX, endY);	
 }
 
 }

@@ -30,6 +30,11 @@
 %define public
 %code imports {
 	package chemface;
+	
+	/**
+	 * Automatically generated parser of the SMILES grammar.
+	 * 
+	 */
 }
 
 %code {
@@ -40,7 +45,18 @@
 	public NodePlacer getNodes() {
 		return graph;
 	}
-
+	
+	
+	/**
+	 * Joins two graphs.
+	 * 
+	 * @param a First graph (the one that takes over the other)
+	 * @param b Second graph
+	 * @param joinerA Node used for joining from first graph)
+	 * @param joinerB Node used for joining from second graph)
+	 * @param bond Bond used for joining
+	 * 
+	 */
 	public void joinGraphs(NodePlacer a, NodePlacer b,
 			PositionedNode joinerA, PositionedNode joinerB,
 			Bond bond) {

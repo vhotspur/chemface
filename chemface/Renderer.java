@@ -1,18 +1,40 @@
 package chemface;
 
+/**
+ * Renderer of the chemical formulaes.
+ * 
+ */
 class Renderer {
 
+/// Nodes of the formulae
 private NodePlacer nodes;
+/// Result image
 private java.awt.image.BufferedImage image_ = null;
 
+/**
+ * Constructor.
+ * 
+ * @param placedNodes Already positioned nodes of the chemical structure
+ * 
+ */
 public Renderer(NodePlacer placedNodes) {
 	nodes = placedNodes;
 }
 
+/**
+ * Tells rendered image.
+ * 
+ * @retval null When image was not yet rendered
+ * 
+ */
 public java.awt.image.BufferedImage getImage() {
 	return image_;
 }
 
+/**
+ * Renders the image.
+ * 
+ */
 public void render() {
 	for (PositionedNode node : nodes.vertexSet()) {
 		node.render();
@@ -39,6 +61,7 @@ public void render() {
 		bond.render(gr);
 	}
 	
+	// draw the nodes
 	for (PositionedNode node : nodes.vertexSet()) {
 		int width = (int)node.getImageDimension().getWidth();
 		int height = (int)node.getImageDimension().getHeight();
@@ -49,7 +72,10 @@ public void render() {
 	}
 }
 
-
+/**
+ * Tells needed rectangle for the canvas.
+ * 
+ */
 protected java.awt.geom.Rectangle2D.Double getCanvasRectangle() {
 	java.awt.geom.Rectangle2D.Double result = 
 		new java.awt.geom.Rectangle2D.Double();
@@ -69,6 +95,15 @@ protected java.awt.geom.Rectangle2D.Double getCanvasRectangle() {
 	return result;
 }
 
+/**
+ * Normalize nodes position.
+ * 
+ * By normalization is meant shifting all nodes position to use only
+ * first quadrant (both coordinates positive).
+ * 
+ * @param totalDimension Canvas size
+ * 
+ */
 protected void normalizePositions(java.awt.Dimension totalDimension) {
 	java.awt.geom.Rectangle2D.Double canvasRect = getCanvasRectangle();
 	totalDimension.setSize(canvasRect.getWidth(), canvasRect.getHeight());

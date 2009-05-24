@@ -18,6 +18,7 @@ protected static final int imageMargin = 15;
 
 /**
  * Constructs node from a descriptive string.
+ * 
  * @param s Node description (no bonds are expected)
  * @param font Font to use when rendering
  * 
@@ -29,16 +30,30 @@ public Node(String s, java.awt.Font font) {
 	image_ = null;
 }
 
+/**
+ * Copy constructor.
+ * 
+ * @param n Source node
+ * 
+ */
 public Node(Node n) {
 	descr_ = n.descr_;
 	font_ = n.font_;
 	image_ = null;
 }
 
+/**
+ * Clones the node.
+ * 
+ */
 public Object clone() {
 	return new Node(this);
 }
 
+/**
+ * Tells node's text.
+ * 
+ */
 public String toString() {
 	return descr_;
 }
@@ -224,6 +239,7 @@ public void render() {
 
 /**
  * Renders normal text into the canvas.
+ * 
  * @param text Text to render
  * @param graphics Canvas where to render
  * @param x Start of the text
@@ -239,6 +255,7 @@ protected int renderNormalText(String text, java.awt.Graphics2D graphics, int x,
 
 /**
  * Renders subscript into the canvas.
+ * 
  * @param text Text to render
  * @param graphics Canvas where to render
  * @param x Start of the text
@@ -256,6 +273,7 @@ protected int renderSubscript(String text, java.awt.Graphics2D graphics, int x, 
 
 /**
  * Renders superscript text into the canvas.
+ * 
  * @param text Text to render
  * @param graphics Canvas where to render
  * @param x Start of the text
@@ -273,6 +291,7 @@ protected int renderSuperscript(String text, java.awt.Graphics2D graphics, int x
 
 /**
  * Returns font prepared to be used for subscript.
+ * 
  * @param font Font to derive from
  * @return Subscript font
  * 
@@ -289,6 +308,7 @@ protected java.awt.Font getSubscriptFont(java.awt.Font font) {
 
 /**
  * Returns font prepared to be used for superscript.
+ * 
  * @param font Font to derive from
  * @return Superscript font
  * 
@@ -304,6 +324,7 @@ protected java.awt.Font getSuperscriptFont(java.awt.Font font) {
 
 /**
  * Counts vertical shift of a baseline for a subscript.
+ * 
  * @param font Used font
  * @return Baseline shift
  * 
@@ -314,6 +335,7 @@ protected int getSubscriptBaselineShift(java.awt.Font font) {
 
 /**
  * Counts vertical shift of a baseline for a superscript.
+ * 
  * @param font Used font
  * @return Baseline shift
  * 
@@ -327,6 +349,7 @@ protected int getSuperscriptBaselineShift(java.awt.Font font) {
  * opening curly brace, single character is returned (thus, that is not
  * an error, it is a - though a poor - simulation of approach used in
  * TeX).
+ * 
  * @return Position of first character after closing parentheses
  * @retval -1 Error (unclosed parenthesis)
  * 
@@ -350,6 +373,7 @@ protected int getBracedText(String text, int openParen, StringBuffer result) {
 
 /**
  * Returns rendered image.
+ * 
  * @return Rendered image
  * @retval null No rendering was performed, no image is ready
  * 
@@ -358,10 +382,25 @@ public java.awt.image.BufferedImage getImage() {
 	return image_;
 }
 
+/**
+ * Tells dimension of the rendered image.
+ * 
+ * @warning This method may be called only after previous call to render().
+ * 
+ */
 public java.awt.Dimension getImageDimension() {
 	return new java.awt.Dimension(image_.getWidth(), image_.getHeight());
 }
 
+/**
+ * Counts rectangle for image trimming.
+ * 
+ * By trimming are removed unused areas of the image.
+ * 
+ * @return Trim rectangle
+ * @param image Image where the trimming would be performed
+ * 
+ */
 public static java.awt.Rectangle getTrimRectangle(java.awt.image.BufferedImage image) {
 	int width = image.getWidth();
 	int height = image.getHeight();
@@ -428,6 +467,14 @@ public static java.awt.Rectangle getTrimRectangle(java.awt.image.BufferedImage i
 	return new java.awt.Rectangle(left, top, right - left + 1, bottom - top + 1);
 }
 
+/**
+ * Tells whether pixel in an image is fully transparent.
+ * 
+ * @param image Source image
+ * @param x X coordinate
+ * @param y Y cooridnate
+ * 
+ */
 public static boolean isPixelFullyTransparent(
 		java.awt.image.BufferedImage image, 
 		int x, int y) {
