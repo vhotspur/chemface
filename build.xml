@@ -8,6 +8,8 @@
 	<property name="distversion" value="0.1" />
 	<property name="distdir" value="dist" />
 	<property name="srcdir" value="." />
+	<property name="parsersrcdir" value="${srcdir}/${distname}" />
+	<property name="parserbasename" value="SmilesParser" />
 	<property name="builddir" value="build" />
 	<property name="docsdir" value="gendocs" />
 	<property name="libdir" value="lib" />
@@ -25,11 +27,20 @@
 	<target name="all" depends="run" />
 	
 	<target name="compile" depends="init">
-		<javac 
-				srcdir="${srcdir}" 
-				destdir="${builddir}"
-				classpathref="classpath" >
-			<compilerarg value="-Xlint:-path"/>
+		<echo message="Generating parser using Bison..." />
+		<exec executable="bison">
+			<arg value="--report=all" />
+			<arg value="-vvvv" />
+			<arg value="--warnings=all" />
+			<arg value="--language=java" />
+			<arg value="-o" />
+			<arg value="${builddir}/${parserbasename}.java" />
+			<arg value="${parsersrcdir}/${parserbasename}.y" />
+		</exec>
+		<javac destdir="${builddir}" classpathref="classpath">
+			<src path="${srcdir}" />
+			<src path="${builddir}" />
+			<compilerarg value="-Xlint:-path" />
 		</javac>
 	</target>
 	
