@@ -76,22 +76,34 @@ public int yylex() {
 		case 'I' :
 			return yylexElement(Element.IODINE, 1);
 		case '(' :
-			formulae.delete(0, 1);
+			eat(1);
 			return SmilesParser.TOK_BRANCH_START;
 		case ')' :
-			formulae.delete(0, 1);
+			eat(1);
 			return SmilesParser.TOK_BRANCH_END;
+		case '-' :
+			eat(1);
+			return SmilesParser.TOK_BOND_SINGLE;
+		case '=' :
+			eat(1);
+			return SmilesParser.TOK_BOND_DOUBLE;
+		case '#' :
+			eat(1);
+			return SmilesParser.TOK_BOND_TRIPLE;
 		default :
 			return SmilesParser.TOK_ERROR;
 	}
 }
 
 private int yylexElement(Element el, int charsEaten) {
-	formulae.delete(0, charsEaten);
+	eat(charsEaten);
 	ctx.element = el;
 	return SmilesParser.TOK_ELEM_ORGANIC;
 }
 
+private void eat(int charsCount) {
+	formulae.delete(0, charsCount);
+}
 
 public Context getLVal() {
 	return ctx.makeIndependent();

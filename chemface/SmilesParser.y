@@ -5,6 +5,8 @@
 
 %language "Java"
 %token TOK_BOND_SINGLE
+%token TOK_BOND_DOUBLE
+%token TOK_BOND_TRIPLE
 %token<SmilesLexer.Context> TOK_ELEM_ORGANIC
 %token<SmilesLexer.Context> TOK_ELEM_OTHER
 %token TOK_BRANCH_START
@@ -52,7 +54,6 @@
 				}
 			}
 		}
-		System.out.printf("Still okay 01 (%s, %s)\n", joinerA.toString(), joinerB.toString());
 		a.addEdge(joinerA, joinerB, bond);
 	}
 }
@@ -86,14 +87,12 @@ formula:
 		$$.lastNode = $3.lastNode;
 	}}
 	| formula branch formula_without_branches {{
-		System.out.printf("Still okay 1\n");
 		joinGraphs($1.graph, $2.graph,
 			$1.lastNode, $2.firstNode,
 			$2.hookEdge);
-		System.out.printf("Still okay 2\n");
 		joinGraphs($1.graph, $3.graph,
 			$1.lastNode, $3.firstNode,
-			new Bond());
+			new Bond(Bond.Kind.SINGLE));
 		$$.graph = $1.graph;
 		$$.firstNode = $1.firstNode;
 		$$.lastNode = $3.lastNode;
@@ -103,7 +102,7 @@ formula:
 formula_without_branches:
 	formula_without_branches element {{
 		$1.graph.addVertex($2.node);
-		$1.graph.addEdge($2.node, $1.lastNode);
+		$1.graph.addEdge($2.node, $1.lastNode, new Bond(Bond.Kind.SINGLE));
 		$$.graph = $1.graph;
 		$$.lastNode = $2.node;
 		$$.firstNode = $1.firstNode;
@@ -127,7 +126,7 @@ formula_without_branches:
 bondedsubformula:
 	formula {{
 		$$.graph = $1.graph;
-		$$.hookEdge = new Bond();
+		$$.hookEdge = new Bond(Bond.Kind.SINGLE);
 		$$.firstNode = $1.firstNode;
 		$$.lastNode = $1.lastNode;
 	}}
@@ -166,8 +165,15 @@ element:
 
 bond:
 	TOK_BOND_SINGLE {{
-		$$.bond = new Bond();
+		$$.bond = new Bond(Bond.Kind.SINGLE);
 	}}
+	| TOK_BOND_DOUBLE {{
+		$$.bond = new Bond(Bond.Kind.DOUBLE);
+	}}
+	| TOK_BOND_TRIPLE {{
+		$$.bond = new Bond(Bond.Kind.TRIPLE);
+	}}
+	;
 
 %%
 
