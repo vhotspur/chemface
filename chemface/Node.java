@@ -13,6 +13,8 @@ private java.awt.Font font_;
 /// Rendered image
 private java.awt.image.BufferedImage image_;
 
+private static final int alphaChannelFullyTransparent = 0;
+
 /**
  * Constructs node from a descriptive string.
  * @param s Node description (no bonds are expected)
@@ -204,7 +206,8 @@ public void render() {
 	
 	// FIXME - these formulaes for counting font height are not very accurate
 	// and could be rethinked (if time allows)
-	image_ = image.getSubimage(0, top, shift, bottom - top + 2);
+	java.awt.Rectangle trim = getTrimRectangle(image);
+	image_ = image.getSubimage(trim.x, trim.y, trim.width, trim.height);
 }
 
 /**
@@ -347,6 +350,81 @@ public java.awt.Dimension getImageDimension() {
 	return new java.awt.Dimension(image_.getWidth(), image_.getHeight());
 }
 
+public static java.awt.Rectangle getTrimRectangle(java.awt.image.BufferedImage image) {
+	int width = image.getWidth();
+	int height = image.getHeight();
+	
+	int left = 0;
+	int right = width;
+	int top = 0;
+	int bottom = height;
+	
+	for (int x = 0; x < width; x++) {
+		boolean hasOpaque = false;
+		for (int y = 0; y<height; y++) {
+			if (!isPixelFullyTransparent(image, x, y)) {
+				hasOpaque = true;
+				break;
+			}
+		}
+		if (hasOpaque) {
+			left = Math.max(left, x);
+			break;
+		}
+	}
+	for (int x = width-1; x >= 0; x--) {
+		boolean hasOpaque = false;
+		for (int y = 0; y<height; y++) {
+			if (!isPixelFullyTransparent(image, x, y)) {
+				hasOpaque = true;
+				break;
+			}
+		}
+		if (hasOpaque) {
+			right = Math.min(right, x);
+			break;
+		}
+	}
+	
+	for (int y = 0; y < height; y++) {
+		boolean hasOpaque = false;
+		for (int x = 0; x<width; x++) {
+			if (!isPixelFullyTransparent(image, x, y)) {
+				hasOpaque = true;
+				break;
+			}
+		}
+		if (hasOpaque) {
+			top = Math.max(top, y);
+			break;
+		}
+	}
+	for (int y = height-1; y >= 0; y--) {
+		boolean hasOpaque = false;
+		for (int x = 0; x<width; x++) {
+			if (!isPixelFullyTransparent(image, x, y)) {
+				hasOpaque = true;
+				break;
+			}
+		}
+		if (hasOpaque) {
+			bottom = Math.min(bottom, y);
+			break;
+		}
+	}
+	System.out.printf("%d\n", left);
+	return new java.awt.Rectangle(left, top, right - left, bottom - top);
+}
+
+public static boolean isPixelFullyTransparent(
+		java.awt.image.BufferedImage image, 
+		int x, int y) {
+	java.awt.image.ColorModel cm = image.getColorModel();
+	int rgb = image.getRGB(x, y);
+	Object pixel = cm.getDataElements(rgb, null);
+	int alpha = cm.getAlpha(pixel);
+	return alpha == alphaChannelFullyTransparent;
+}
 
 } // class Node
 

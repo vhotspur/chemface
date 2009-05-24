@@ -7,7 +7,7 @@ public Bond() {
 }
 
 public double optimalLength() {
-	return 200.0;
+	return 500.0;
 }
 
 }
