@@ -71,7 +71,6 @@ protected java.awt.geom.Rectangle2D.Double getCanvasRectangle() {
 
 protected void normalizePositions(java.awt.Dimension totalDimension) {
 	java.awt.geom.Rectangle2D.Double canvasRect = getCanvasRectangle();
-	System.out.println(canvasRect.toString());
 	totalDimension.setSize(canvasRect.getWidth(), canvasRect.getHeight());
 	double shiftX = - canvasRect.getX();
 	double shiftY = - canvasRect.getY();

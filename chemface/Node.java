@@ -58,7 +58,6 @@ public void render() {
 		letterHeight = height = metrics.getHeight();
 		width = metrics.stringWidth(descr_);
 	}
-	System.out.printf("Counted dimensions as %dx%d\n", width, height);
 	
 	/*
 	 * Start drawing
@@ -420,7 +419,7 @@ public static java.awt.Rectangle getTrimRectangle(java.awt.image.BufferedImage i
 			break;
 		}
 	}
-	System.out.printf("%d\n", left);
+
 	return new java.awt.Rectangle(left, top, right - left + 1, bottom - top + 1);
 }
 

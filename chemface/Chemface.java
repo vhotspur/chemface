@@ -8,7 +8,7 @@ public static void main(String[] args) throws java.io.IOException {
 	lexer.setSource("COC");
 	
 	SmilesParser parser = new SmilesParser(lexer);
-	parser.setDebugLevel(1);
+	//parser.setDebugLevel(1);
 	boolean parseOkay = parser.parse();
 	if (!parseOkay) {
 		System.out.println("Parsing went gaga!");
