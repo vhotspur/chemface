@@ -108,7 +108,6 @@ public void findOptimalPlacement() {
 		node.setVelocity(new java.awt.geom.Point2D.Double(0.0, 0.0));
 	}
 	shiftAllRandomly(); shiftAllRandomly();
-	dumpPositions();
 	
 	double totalKineticEnergy;
 	do {

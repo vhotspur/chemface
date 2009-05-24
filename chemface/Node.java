@@ -24,7 +24,6 @@ protected static final int imageMargin = 15;
  * 
  */
 public Node(String s, java.awt.Font font) {
-	System.out.printf("Creating node `%s'...\n", s);
 	descr_ = s;
 	font_ = font;
 	image_ = null;

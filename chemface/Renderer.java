@@ -41,7 +41,6 @@ public void render() {
 	}
 	java.awt.Dimension imageDimension = new java.awt.Dimension();
 	normalizePositions(imageDimension);
-	nodes.dumpPositions();
 	
 	image_ = 
 		new java.awt.image.BufferedImage(

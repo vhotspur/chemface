@@ -57,6 +57,7 @@
 				<pathelement location="${builddir}" />
 				<path refid="classpath" />
 			</classpath>
+			<arg value="-v" />
 			<arg value="-o" />
 			<arg value="out.png" />
 			<arg value="O=C=O" />
