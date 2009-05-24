@@ -57,8 +57,9 @@
 				<pathelement location="${builddir}" />
 				<path refid="classpath" />
 			</classpath>
-			<arg value="-h" />
-			<arg value="--help" />
+			<arg value="-o" />
+			<arg value="out.png" />
+			<arg value="O=C=O" />
 		</java>
 	</target>
 		
