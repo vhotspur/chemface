@@ -25,6 +25,16 @@ public Node(String s, java.awt.Font font) {
 	image_ = null;
 }
 
+public Node(Node n) {
+	descr_ = n.descr_;
+	font_ = n.font_;
+	image_ = null;
+}
+
+public String toString() {
+	return descr_;
+}
+
 /**
  * Renders the node into internal buffer.
  * 

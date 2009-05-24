@@ -5,4 +5,8 @@ Tree
     Item chemface/Chemface.java
     Item chemface/Node.java
     Item chemface/RenderingOptions.java
+    Item chemface/PositionedNode.java
+    Item chemface/NodePlacer.java
+    Item chemface/MathGraph.java
+    Item chemface/Bond.java
 /Tree

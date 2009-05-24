@@ -10,6 +10,12 @@
 	<property name="srcdir" value="." />
 	<property name="builddir" value="build" />
 	<property name="docsdir" value="gendocs" />
+	<property name="libdir" value="lib" />
+
+	<path id="classpath">
+		<fileset dir="${libdir}" includes="*.jar" />
+	</path>
+
 	
 	<!-- computed properties -->
 	<property name="dist" value="${distname}-${distversion}" />
@@ -20,9 +26,11 @@
 	
 	<target name="compile" depends="init">
 		<javac 
-			srcdir="${srcdir}" 
-			destdir="${builddir}"
-		/>
+				srcdir="${srcdir}" 
+				destdir="${builddir}"
+				classpathref="classpath" >
+			<compilerarg value="-Xlint:-path"/>
+		</javac>
 	</target>
 	
 	<!-- "init" creates directories needed for
@@ -36,6 +44,7 @@
 		<java classname="chemface.Chemface">
 			<classpath>
 				<pathelement location="${builddir}" />
+				<path refid="classpath" />
 			</classpath>
 			<arg value="-h" />
 			<arg value="--help" />
