@@ -84,7 +84,9 @@
 		<javadoc
 			destdir="${docsdir}"
 			packagenames="chemface.*"
-			access="private">
+			overview="overview.html"
+			includenosourcepackages="true"
+			>
 			<fileset dir="${srcdir}" defaultexcludes="yes" />
 			<fileset dir="${builddir}" defaultexcludes="yes" />
 		</javadoc>
