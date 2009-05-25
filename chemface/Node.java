@@ -132,9 +132,12 @@ public void render() {
 		 * Handle normal text
 		 * 
 		 */
-		if (Character.isLetter(c)) {
+		if (Character.isLetter(c) || c == ')' || c == '(') {
 			StringBuffer text = new StringBuffer();			
-			while ((i < len) && Character.isLetter(descr_.charAt(i))) {				
+			while ((i < len) && 
+				(Character.isLetter(descr_.charAt(i)) 
+					|| descr_.charAt(i) == ')' || descr_.charAt(i) == '(')
+				) {
 				text.append(descr_.charAt(i));				
 				i++;
 			}
