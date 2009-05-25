@@ -12,6 +12,7 @@
 	<property name="parserbasename" value="SmilesParser" />
 	<property name="builddir" value="build" />
 	<property name="docsdir" value="gendocs" />
+	<property name="samplesdir" value="samples" />
 	<property name="libdir" value="lib" />
 
 	<path id="classpath">
@@ -52,6 +53,18 @@
 	</target>
 	
 	<target name="samples" depends="compile">
+		<mkdir dir="${samplesdir}" />
+		
+		<echo message="chemface --help" />
+		<java classname="chemface.Chemface">
+			<classpath>
+				<pathelement location="${builddir}" />
+				<path refid="classpath" />
+			</classpath>
+			<arg value="--help" />
+		</java>
+		
+		<echo message="chemface -v -o ${samplesdir}/CO2.png O=C=O" />
 		<java classname="chemface.Chemface">
 			<classpath>
 				<pathelement location="${builddir}" />
@@ -59,9 +72,24 @@
 			</classpath>
 			<arg value="-v" />
 			<arg value="-o" />
-			<arg value="CO2.png" />
+			<arg value="${samplesdir}/CO2.png" />
 			<arg value="O=C=O" />
 		</java>
+		
+		<echo message="chemface -v --font-size=40 -o ${samplesdir}/HSO4.png '(HSO4)^{-}'" />
+		<java classname="chemface.Chemface">
+			<classpath>
+				<pathelement location="${builddir}" />
+				<path refid="classpath" />
+			</classpath>
+			<arg value="-v" />
+			<arg value="--font-size=40" />
+			<arg value="-o" />
+			<arg value="${samplesdir}/HSO4.png" />
+			<arg value="'(HSO4)^{-}'" />
+		</java>
+		
+		<echo message="chemface -v -o ${samplesdir}/H2O.png HOH" />
 		<java classname="chemface.Chemface">
 			<classpath>
 				<pathelement location="${builddir}" />
@@ -69,19 +97,23 @@
 			</classpath>
 			<arg value="-v" />
 			<arg value="-o" />
-			<arg value="H2O.png" />
+			<arg value="${samplesdir}/H2O.png" />
 			<arg value="HOH" />
 		</java>
+		
+		<echo message="chemface --font=Times New Roman -o ${samplesdir}/metan.png CH4" />
 		<java classname="chemface.Chemface">
 			<classpath>
 				<pathelement location="${builddir}" />
 				<path refid="classpath" />
 			</classpath>
-			<arg value="-v" />
+			<arg value="--font=Times New Roman" />
 			<arg value="-o" />
-			<arg value="metan.png" />
+			<arg value="${samplesdir}/metan.png" />
 			<arg value="'CH4'" />
 		</java>
+		
+		<echo message="chemface -v -o ${samplesdir}/but1en.png 'CH2'='CH''CH2''CH3'" />
 		<java classname="chemface.Chemface">
 			<classpath>
 				<pathelement location="${builddir}" />
@@ -89,13 +121,15 @@
 			</classpath>
 			<arg value="-v" />
 			<arg value="-o" />
-			<arg value="but1en.png" />
+			<arg value="${samplesdir}/but1en.png" />
 			<arg value="'CH2'='CH''CH2''CH3'" />
 		</java>
+		
 	</target>
 		
 	<target name="clean">
 		<delete dir="${builddir}" />
+		<delete dir="${samplesdir}" />
 	</target>
 	
 	<target name="dist" depends="init">
@@ -104,9 +138,15 @@
 				<include name="build.xml" />
 				<include name="chemface.ottproj" />
 				<include name="Doxyfile" />
+				<include name="overview.html" />
 			</tarfileset>
-			<tarfileset dir="." prefix="${dist}">
+			<tarfileset dir="${srcdir}" prefix="${dist}/">
 				<include name="**/*.java" />
+				<include name="**/*.y" />
+				<exclude name="${builddir}/*" />
+			</tarfileset>
+			<tarfileset dir="${libdir}" prefix="${dist}/${libdir}">
+				<include name="*.jar" />
 			</tarfileset>
 		</tar>
 		<gzip destfile="${distdir}/${dist}.tar.gz" src="${distdir}/${dist}.tar"/>
