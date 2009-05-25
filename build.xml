@@ -139,6 +139,7 @@
 				<include name="chemface.ottproj" />
 				<include name="Doxyfile" />
 				<include name="overview.html" />
+				<include name="README" />
 			</tarfileset>
 			<tarfileset dir="${srcdir}" prefix="${dist}/">
 				<include name="**/*.java" />
