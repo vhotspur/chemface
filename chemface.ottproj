@@ -3,6 +3,7 @@ Tree
     Item build.xml
     Item Doxyfile
     Item chemface/Chemface.java
+    Item overview.html
     Folder Parser
         Item chemface/SmilesParser.y
         Item chemface/SmilesLexer.java

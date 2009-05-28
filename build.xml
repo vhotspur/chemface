@@ -8,12 +8,34 @@
 	<property name="distversion" value="0.1" />
 	<property name="distdir" value="dist" />
 	<property name="srcdir" value="." />
+	<property name="builddir" value="build" />
 	<property name="parsersrcdir" value="${srcdir}/${distname}" />
 	<property name="parserbasename" value="SmilesParser" />
-	<property name="builddir" value="build" />
+	<property name="parserbuilddir" value="${builddir}/${distname}" />	
 	<property name="docsdir" value="gendocs" />
 	<property name="samplesdir" value="samples" />
 	<property name="libdir" value="lib" />
+	
+	<condition property="parser-not-generated">
+		<not>
+			<or>
+				<available 
+					file="${parsersrcdir}/${parserbasename}.java" />
+				<uptodate 
+					targetfile="${parserbuilddir}/${parserbasename}.java"
+					srcfile="${parsersrcdir}/${parserbasename}.y" />
+			</or>
+		</not>
+	</condition>
+	
+	<condition property="init-needed">
+		<not><and>
+			<available file="${builddir}" />
+			<available file="${parserbuilddir}" />
+			<available file="${distdir}" />
+		</and></not>
+	</condition>
+
 
 	<path id="classpath">
 		<fileset dir="${libdir}" includes="*.jar" />
@@ -22,12 +44,21 @@
 	
 	<!-- computed properties -->
 	<property name="dist" value="${distname}-${distversion}" />
+	<property name="distnobison" value="${distname}-no-bison-${distversion}" />
 	
 	
 	<!-- default target -->
 	<target name="all" depends="compile" />
 	
-	<target name="compile" depends="init">
+	<target name="compile" depends="run-bison">
+		<javac destdir="${builddir}" classpathref="classpath">
+			<src path="${builddir}" />
+			<src path="${srcdir}" />
+			<compilerarg value="-Xlint:-path" />
+		</javac>
+	</target>
+	
+	<target name="run-bison" depends="init" if="parser-not-generated">
 		<echo message="Generating parser using Bison..." />
 		<exec executable="bison">
 			<arg value="--report=all" />
@@ -35,20 +66,16 @@
 			<arg value="--warnings=all" />
 			<arg value="--language=java" />
 			<arg value="-o" />
-			<arg value="${builddir}/${parserbasename}.java" />
+			<arg value="${parserbuilddir}/${parserbasename}.java" />
 			<arg value="${parsersrcdir}/${parserbasename}.y" />
 		</exec>
-		<javac destdir="${builddir}" classpathref="classpath">
-			<src path="${srcdir}" />
-			<src path="${builddir}" />
-			<compilerarg value="-Xlint:-path" />
-		</javac>
 	</target>
 	
 	<!-- "init" creates directories needed for
 	building and packing dists -->
-	<target name="init">
+	<target name="init" if="init-needed">
 		<mkdir dir="${builddir}" />
+		<mkdir dir="${parserbuilddir}" />
 		<mkdir dir="${distdir}" />
 	</target>
 	
@@ -150,7 +177,30 @@
 				<include name="*.jar" />
 			</tarfileset>
 		</tar>
-		<gzip destfile="${distdir}/${dist}.tar.gz" src="${distdir}/${dist}.tar"/>
+		<gzip destfile="${distdir}/${dist}.tar.gz" src="${distdir}/${dist}.tar" />
+	</target>
+	
+	<target name="dist-no-bison" depends="compile">
+		<tar destfile="${distdir}/${distnobison}.tar">
+			<tarfileset dir="." prefix="${distnobison}">				
+				<include name="build.xml" />
+				<include name="chemface.ottproj" />
+				<include name="Doxyfile" />
+				<include name="overview.html" />
+				<include name="README" />
+			</tarfileset>
+			<tarfileset dir="${srcdir}" prefix="${distnobison}/">
+				<include name="**/*.java" />
+				<include name="**/*.y" />
+				<exclude name="${builddir}/**" />
+			</tarfileset>
+			<tarfileset dir="${libdir}" prefix="${distnobison}/${libdir}">
+				<include name="*.jar" />
+			</tarfileset>
+			<tarfileset file="${parserbuilddir}/${parserbasename}.java" 
+				prefix="${distnobison}/${distname}/" />
+		</tar>
+		<gzip destfile="${distdir}/${distnobison}.tar.gz" src="${distdir}/${distnobison}.tar" />
 	</target>
 	
 	<target name="docs" depends="initdocs">
