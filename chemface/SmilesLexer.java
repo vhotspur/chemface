@@ -16,6 +16,7 @@ public enum  Element {
 	NITROGEN("N"),
 	IODINE("I"),
 	HYDROGEN("H"),
+	SULFUR("S"),
 	;
 	private String name;
 	Element(String n) {
@@ -127,6 +128,8 @@ public int yylex() {
 			return yylexElement(Element.IODINE, 1);
 		case 'H' :
 			return yylexElement(Element.HYDROGEN, 1);
+		case 'S' :
+			return yylexElement(Element.SULFUR, 1);
 		case '(' :
 			eat(1);
 			return SmilesParser.TOK_BRANCH_START;
