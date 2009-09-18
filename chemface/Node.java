@@ -8,6 +8,8 @@ public class Node implements Cloneable {
 
 /// Node description
 private String descr_;
+/// Reference number for cycles
+public int cycleReference = 0;
 /// Font used for drawing text
 private java.awt.Font font_;
 /// Rendered image
@@ -27,6 +29,7 @@ public Node(String s, java.awt.Font font) {
 	descr_ = s;
 	font_ = font;
 	image_ = null;
+	cycleReference = 0;
 }
 
 /**

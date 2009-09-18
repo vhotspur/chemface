@@ -34,6 +34,8 @@ public enum  Element {
 public class Context {
 	/// Node storage
 	public PositionedNode node = null;
+	/// Reference number for cycles
+	public int refNo = 0;
 	/// (Sub)graph storage
 	public NodePlacer graph = null;
 	/// First node of the graph (used when adding nodes)
@@ -76,6 +78,7 @@ public class Context {
 			}
 		}
 		cl.element = element;
+		cl.refNo = refNo;
 		
 		return cl;
 	}
@@ -147,6 +150,16 @@ public int yylex() {
 			return SmilesParser.TOK_BOND_TRIPLE;
 		case '\'' : 
 			return yylexLiteral();
+		case '1' :
+		case '2' :
+		case '3' :
+		case '4' :
+		case '5' :
+		case '6' :
+		case '7' :
+		case '8' :
+		case '9' :
+			return yylexRefNumber(formulae.charAt(0));
 		default :
 			return SmilesParser.TOK_ERROR;
 	}
@@ -163,6 +176,12 @@ private int yylexElement(Element el, int charsEaten) {
 	eat(charsEaten);
 	ctx.element = el;
 	return SmilesParser.TOK_ELEM_ORGANIC;
+}
+
+private int yylexRefNumber(char num) {
+	eat(1);
+	ctx.refNo = Integer.parseInt(Character.toString(num));
+	return SmilesParser.TOK_ELEM_REFNUMBER;
 }
 
 private int yylexLiteral() {

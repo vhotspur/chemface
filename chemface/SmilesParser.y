@@ -10,11 +10,12 @@
 %token<SmilesLexer.Context> TOK_ELEM_ORGANIC
 %token<SmilesLexer.Context> TOK_ELEM_OTHER
 %token<SmilesLexer.Context> TOK_ELEM_CUSTOM
+%token<SmilesLexer.Context> TOK_ELEM_REFNUMBER
 %token TOK_BRANCH_START
 %token TOK_BRANCH_END
 %token TOK_ERROR
 
-%type<SmilesLexer.Context> formula bondedsubformula formula_without_branches branch branches element bond;
+%type<SmilesLexer.Context> formula bondedsubformula formula_without_branches branch branches element bare_element bond;
 
 %define parser_class_name "SmilesParser"
 %define stype "SmilesLexer.Context"
@@ -71,6 +72,20 @@
 
 smiles: formula {{
 		graph = $1.graph;
+		// join cycles
+		for (PositionedNode v1 : graph.vertexSet()) {
+			for (PositionedNode v2 : graph.vertexSet()) {
+				if (v2 == v1) {
+					continue;
+				}
+				if (v1.cycleReference == 0) {
+					continue;
+				}
+				if (v1.cycleReference == v2.cycleReference) {
+					graph.addEdge(v1, v2, new Bond(Bond.Kind.SINGLE));
+				}
+			}
+		}
 	}}
 
 
@@ -170,6 +185,17 @@ branch:
 	
 
 element:
+	bare_element {{
+		$$.node = $1.node;
+	}}
+	| bare_element TOK_ELEM_REFNUMBER {{
+		$$.node = $1.node;
+		$$.node.cycleReference = $2.refNo;
+		System.err.printf("Found cyclic reference (%d)!\n", $2.refNo);
+	}}
+	;
+	
+bare_element:
 	TOK_ELEM_ORGANIC {{
 		Node node = new Node(
 			$1.element.getName(),
