@@ -79,6 +79,8 @@
 		<mkdir dir="${distdir}" />
 	</target>
 	
+	<target name="all-samples" depends="samples,cyclo-samples" />
+	
 	<target name="cyclo-samples" depends="compile">
 		<mkdir dir="${samplesdir}" />
 		
