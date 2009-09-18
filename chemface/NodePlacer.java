@@ -11,7 +11,7 @@ package chemface;
 public class NodePlacer extends org.jgrapht.graph.SimpleGraph<PositionedNode, Bond> implements Cloneable {
 
 /// Initial random shift (fine tunning node placement)
-private final double randomShiftCoefficient = 5.0;
+private final double randomShiftCoefficient = 1.0;
 /// Hooke's constant (fine tunning node placement)
 private final double hookeConstant = 0.01;
 /// Constant for Coulomb's law (fine tunning node placement)

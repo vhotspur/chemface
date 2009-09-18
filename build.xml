@@ -79,6 +79,48 @@
 		<mkdir dir="${distdir}" />
 	</target>
 	
+	<target name="all-samples" depends="samples,cyclo-samples" />
+	
+	<target name="cyclo-samples" depends="compile">
+		<mkdir dir="${samplesdir}" />
+		
+		<echo message="chemface -v -o ${samplesdir}/cyclohexane_h.png C1(H)(H)C(H)(H)C(H)(H)C(H)(H)C(H)(H)C1(H)H" />
+		<java classname="chemface.Chemface">
+			<classpath>
+				<pathelement location="${builddir}" />
+				<path refid="classpath" />
+			</classpath>
+			<arg value="-v" />
+			<arg value="-o" />
+			<arg value="${samplesdir}/cyclohexane_h.png" />
+			<arg value="C1(H)(H)C(H)(H)C(H)(H)C(H)(H)C(H)(H)C1(H)H" />
+		</java>
+		
+		<echo message="chemface -v -o ${samplesdir}/cyclohexane.png C1CCCCC1" />
+		<java classname="chemface.Chemface">
+			<classpath>
+				<pathelement location="${builddir}" />
+				<path refid="classpath" />
+			</classpath>
+			<arg value="-v" />
+			<arg value="-o" />
+			<arg value="${samplesdir}/cyclohexane.png" />
+			<arg value="C1CCCCC1" />
+		</java>
+		
+		<echo message="chemface -v -o ${samplesdir}/cyclohexane_with_ethan.png C1CCC(CC)CC1" />
+		<java classname="chemface.Chemface">
+			<classpath>
+				<pathelement location="${builddir}" />
+				<path refid="classpath" />
+			</classpath>
+			<arg value="-v" />
+			<arg value="-o" />
+			<arg value="${samplesdir}/cyclohexane_with_ethan.png" />
+			<arg value="C1CCC(CC)CC1" />
+		</java>
+	</target>
+	
 	<target name="samples" depends="compile">
 		<mkdir dir="${samplesdir}" />
 		
