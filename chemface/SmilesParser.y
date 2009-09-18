@@ -191,7 +191,6 @@ element:
 	| bare_element TOK_ELEM_REFNUMBER {{
 		$$.node = $1.node;
 		$$.node.cycleReference = $2.refNo;
-		System.err.printf("Found cyclic reference (%d)!\n", $2.refNo);
 	}}
 	;
 	
