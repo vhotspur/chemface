@@ -1,0 +1,7 @@
+build/
+doxydocs/
+gendocs/
+samples/
+.ant-targets-build.xml
+
+
