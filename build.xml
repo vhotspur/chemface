@@ -16,6 +16,13 @@
 	<property name="samplesdir" value="samples" />
 	<property name="libdir" value="lib" />
 	
+	<!-- install related properties -->
+	<property name="DESTDIR" value="" />
+	<property name="PREFIX" value="/usr/local/" />
+	<property name="jardir" value="${PREFIX}share/java/" />
+	<property name="myjardir" value="${jardir}${distname}" />
+	
+	
 	<condition property="parser-not-generated">
 		<not>
 			<or>
@@ -263,6 +270,13 @@
 				prefix="${distnobison}/${distname}/" />
 		</tar>
 		<gzip destfile="${distdir}/${distnobison}.tar.gz" src="${distdir}/${distnobison}.tar" />
+	</target>
+	
+	<target name="install" depends="create-jar">
+		<copy
+			file="${distdir}/${distname}-${distversion}.jar"
+			todir="${DESTDIR}${myjardir}"
+		/>
 	</target>
 	
 	<target name="docs" depends="initdocs">
