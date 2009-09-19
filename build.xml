@@ -71,6 +71,26 @@
 		</exec>
 	</target>
 	
+	<target name="create-jar" depends="compile">
+		<jar 
+			destfile="${distdir}/${distname}-${distversion}.jar"
+			basedir="${builddir}/"
+			>
+			<manifest>
+				<attribute name="Built-By" 
+					value="${user.name}" />
+				<attribute name="Implementation-Version" 
+					value="${distversion}" />
+				<attribute name="Main-Class" 
+					value="chemface.Chemface" />
+				<attribute name="Class-Path"
+					value="lib/jgrapht-jdk1.6.jar lib/commons-cli-1.2.jar" />
+			</manifest>
+			<zipfileset src="lib/jgrapht-jdk1.6.jar" />
+			<zipfileset src="lib/commons-cli-1.2.jar" />
+		</jar>
+	</target>
+	
 	<!-- "init" creates directories needed for
 	building and packing dists -->
 	<target name="init" if="init-needed">
