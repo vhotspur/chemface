@@ -4,6 +4,7 @@ Tree
     Item Doxyfile
     Item chemface/Chemface.java
     Item overview.html
+    Item README
     Folder Parser
         Item chemface/SmilesParser.y
         Item chemface/SmilesLexer.java

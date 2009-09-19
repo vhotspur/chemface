@@ -1,43 +1,44 @@
-Chemface - převodník SMILES notace do PNG
-=========================================
+Chemface - converter of SMILES notation into PNG
+================================================
 
-Chemface je jednoduchý převodník ze SMILES notace [1,2] do PNG obrázku.
-Chemface neimplementuje kompletní SMILES, na druhou stranu přidává možnost
-pomocí tzv. literálu specifikovat libovolný řetězec, který se má objevit
-v uzlu molekuly (což standardní SMILES nepodporuje).
+Chemface is a simple converter of SMILES notation [1,2] into PNG image.
 
-Příklady použití
-----------------
-V ukázkách `chemface' znamená typicky 
-`java -cp lib/jgrapht-jdk1.6.jar:lib/commons-cli-1.2.jar:build chemface.Chemface'
+Chemface does not implement full SMILES, however it adds a so called literal
+that allows specification of arbitrary string to appear in molecule node
+(thing not supported by standard SMILES).
+
+Example usage
+-------------
+In these examples, `chemface' is a call to Java interpreter with path to 
+directory with Chemface (compiled) sources.
+
 $ chemface -o out.png "CCCC"
-- vytvoří v souboru out.png obraz butanu
+- creates butane in out.png file
 $ chemface -o out.png "CC(C)(C)C"
-- pomocí závorek lze specifikovat větvení, tento příklad vytvoří obraz
-  2,2-dimethylpropanu
+- braces allows you to specify branches, this examples creates 
+  2,2-dimethylpropane
 $ chemface -o out.png "'H2SO4'"
-- pomocí literálu lze využít automatické zpracování horního a dolního
-  indexu a vytvořit vzorec kyseliny sírové
+- literal automatically parses subscripts to create formulae of sulfur acid
 $ chemface --font=Verdana "'CH2'='CH''CH2''CH3'"
-- vytvoří obraz butenu (všimněte si využití apostrofů) ale použije místo
-  převoleného fontu Verdanu
+- again creates butene but uses literal for nodes and also uses Verdana font
+  for typesetting the formulae
 $ chemface -h
-- vypíše stručnou nápovědu
+- prints short help
 
-Kompilace atd.
---------------
-Použité nástroje
+Compilation etc.
+----------------
+Used tools
 	* Apache Ant version 1.7.1 [3]
 	* java version "1.6.0_13" [4]
 	* bison (GNU Bison) 2.4.1 [5]
-	* Commons CLI [6]
-	* JGraphT [7]
-Vlastní spuštění
-	* `ant compile' zkompiluje a vytvoří .class soubory
-	* `ant samples' spustí ukázkové příklady
-	* `ant docs' vygeneruje javadoc a Doxygen dokumentaci
-	* `ant clean' smaže zkompilované soubory
-	* `ant dist' vytvoří balíček se zdrojovými soubory
+	* Commons CLI [6] (included in distribution)
+	* JGraphT [7] (included in distribution)
+Building and running
+	* `ant compile' compiles the sources
+	* `ant all-samples' runs samples
+	* `ant docs' generates javadoc and Doxygen documentation
+	* `ant clean' cleans generated files
+	* `ant dist' creates package with source files
 
 
 [1] http://en.wikipedia.org/wiki/Simplified_molecular_input_line_entry_specification
