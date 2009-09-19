@@ -2,6 +2,8 @@ build/
 doxydocs/
 gendocs/
 samples/
+dist/
 .ant-targets-build.xml
-
+# when trying install with DESTDIR=pkg
+pkg/
 
