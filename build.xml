@@ -20,7 +20,9 @@
 	<property name="DESTDIR" value="" />
 	<property name="PREFIX" value="/usr/local/" />
 	<property name="jardir" value="${PREFIX}share/java/" />
-	<property name="myjardir" value="${jardir}${distname}" />
+	<property name="myjardir" value="${jardir}${distname}/" />
+	<property name="bindir" value="${PREFIX}share/bin/" />
+	<property name="launchername" value="chemface" />
 	
 	
 	<condition property="parser-not-generated">
@@ -292,7 +294,18 @@
 	</target>
 	
 	<target name="install-launcher-unix" if="is-unix">
-		<echo message="Installing on UNIX" />
+		<copy
+			file="chemface.sh"
+			tofile="${DESTDIR}${bindir}${launchername}">
+			<filterset>
+				<filter token="JARFILE" value="${myjardir}${distname}-${distversion}.jar" />
+			</filterset>
+		</copy>
+		<echo message="chmod 0755 ${bindir}${launchername}" />
+		<exec executable="chmod">
+			<arg value="0755"/>
+			<arg value="${DESTDIR}${bindir}${launchername}"/>
+		</exec>
 	</target>
 	
 	<target name="install-launcher-windows" if="is-windows">
