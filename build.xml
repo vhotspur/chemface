@@ -42,6 +42,13 @@
 			<available file="${distdir}" />
 		</and></not>
 	</condition>
+	
+	<condition property="is-unix">
+		<os family="unix" />
+	</condition>
+	<condition property="is-windows">
+		<os family="windows" />
+	</condition>
 
 
 	<path id="classpath">
@@ -272,12 +279,25 @@
 		<gzip destfile="${distdir}/${distnobison}.tar.gz" src="${distdir}/${distnobison}.tar" />
 	</target>
 	
-	<target name="install" depends="create-jar">
+	
+	<!-- INSTALL targets -->
+	<target name="install" depends="create-jar,install-launcher-unix,install-launcher-windows">
 		<copy
 			file="${distdir}/${distname}-${distversion}.jar"
 			todir="${DESTDIR}${myjardir}"
 		/>
 	</target>
+	
+	<target name="install-launcher-unix" if="is-unix">
+		<echo message="Installing on UNIX" />
+	</target>
+	
+	<target name="install-launcher-windows" if="is-windows">
+		<echo message="Launcher installation on Windows is" />
+		<echo message="not available yet." level="error" />
+	</target>
+	
+	
 	
 	<target name="docs" depends="initdocs">
 		<javadoc
