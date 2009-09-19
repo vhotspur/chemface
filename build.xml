@@ -16,6 +16,15 @@
 	<property name="samplesdir" value="samples" />
 	<property name="libdir" value="lib" />
 	
+	<!-- install related properties -->
+	<property name="DESTDIR" value="" />
+	<property name="PREFIX" value="/usr/local/" />
+	<property name="jardir" value="${PREFIX}share/java/" />
+	<property name="myjardir" value="${jardir}${distname}/" />
+	<property name="bindir" value="${PREFIX}share/bin/" />
+	<property name="launchername" value="chemface" />
+	
+	
 	<condition property="parser-not-generated">
 		<not>
 			<or>
@@ -34,6 +43,13 @@
 			<available file="${parserbuilddir}" />
 			<available file="${distdir}" />
 		</and></not>
+	</condition>
+	
+	<condition property="is-unix">
+		<os family="unix" />
+	</condition>
+	<condition property="is-windows">
+		<os family="windows" />
 	</condition>
 
 
@@ -69,6 +85,26 @@
 			<arg value="${parserbuilddir}/${parserbasename}.java" />
 			<arg value="${parsersrcdir}/${parserbasename}.y" />
 		</exec>
+	</target>
+	
+	<target name="create-jar" depends="compile">
+		<jar 
+			destfile="${distdir}/${distname}-${distversion}.jar"
+			basedir="${builddir}/"
+			>
+			<manifest>
+				<attribute name="Built-By" 
+					value="${user.name}" />
+				<attribute name="Implementation-Version" 
+					value="${distversion}" />
+				<attribute name="Main-Class" 
+					value="chemface.Chemface" />
+				<attribute name="Class-Path"
+					value="lib/jgrapht-jdk1.6.jar lib/commons-cli-1.2.jar" />
+			</manifest>
+			<zipfileset src="lib/jgrapht-jdk1.6.jar" />
+			<zipfileset src="lib/commons-cli-1.2.jar" />
+		</jar>
 	</target>
 	
 	<!-- "init" creates directories needed for
@@ -244,6 +280,40 @@
 		</tar>
 		<gzip destfile="${distdir}/${distnobison}.tar.gz" src="${distdir}/${distnobison}.tar" />
 	</target>
+	
+	
+	<!-- INSTALL targets -->
+	<target name="install"
+		depends="install-jar,install-launcher-unix,install-launcher-windows" />
+
+	<target name="install-jar" depends="create-jar">
+		<copy
+			file="${distdir}/${distname}-${distversion}.jar"
+			todir="${DESTDIR}${myjardir}"
+		/>
+	</target>
+	
+	<target name="install-launcher-unix" if="is-unix">
+		<copy
+			file="chemface.sh"
+			tofile="${DESTDIR}${bindir}${launchername}">
+			<filterset>
+				<filter token="JARFILE" value="${myjardir}${distname}-${distversion}.jar" />
+			</filterset>
+		</copy>
+		<echo message="chmod 0755 ${bindir}${launchername}" />
+		<exec executable="chmod">
+			<arg value="0755"/>
+			<arg value="${DESTDIR}${bindir}${launchername}"/>
+		</exec>
+	</target>
+	
+	<target name="install-launcher-windows" if="is-windows">
+		<echo message="Launcher installation on Windows is" />
+		<echo message="not available yet." level="error" />
+	</target>
+	
+	
 	
 	<target name="docs" depends="initdocs">
 		<javadoc
