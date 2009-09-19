@@ -281,7 +281,10 @@
 	
 	
 	<!-- INSTALL targets -->
-	<target name="install" depends="create-jar,install-launcher-unix,install-launcher-windows">
+	<target name="install"
+		depends="install-jar,install-launcher-unix,install-launcher-windows" />
+
+	<target name="install-jar" depends="create-jar">
 		<copy
 			file="${distdir}/${distname}-${distversion}.jar"
 			todir="${DESTDIR}${myjardir}"
