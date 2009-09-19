@@ -295,7 +295,7 @@
 	
 	<target name="install-launcher-unix" if="is-unix">
 		<copy
-			file="chemface.sh"
+			file="launchers/chemface.sh"
 			tofile="${DESTDIR}${bindir}${launchername}">
 			<filterset>
 				<filter token="JARFILE" value="${myjardir}${distname}-${distversion}.jar" />
@@ -309,8 +309,13 @@
 	</target>
 	
 	<target name="install-launcher-windows" if="is-windows">
-		<echo message="Launcher installation on Windows is" />
-		<echo message="not available yet." level="error" />
+		<copy
+			file="launchers/chemface.bat"
+			tofile="${DESTDIR}${bindir}${launchername}.bat">
+			<filterset>
+				<filter token="JARFILE" value="${myjardir}${distname}-${distversion}.jar" />
+			</filterset>
+		</copy>
 	</target>
 	
 	
