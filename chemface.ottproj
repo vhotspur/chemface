@@ -18,4 +18,8 @@ Tree
         Item chemface/Renderer.java
         Item chemface/RenderingOptions.java
     /Folder
+    Folder Launchers
+        Item launchers/chemface.sh
+        Item launchers/chemface.bat
+    /Folder
 /Tree
