@@ -295,7 +295,7 @@
 	
 	<target name="install-launcher-unix" if="is-unix">
 		<copy
-			file="chemface.sh"
+			file="launchers/chemface.sh"
 			tofile="${DESTDIR}${bindir}${launchername}">
 			<filterset>
 				<filter token="JARFILE" value="${myjardir}${distname}-${distversion}.jar" />
