@@ -7,7 +7,7 @@
 	<property name="distname" value="chemface" />
 	<property name="distversion" value="0.1" />
 	<property name="distdir" value="dist" />
-	<property name="srcdir" value="." />
+	<property name="srcdir" value="src" />
 	<property name="builddir" value="build" />
 	<property name="parsersrcdir" value="${srcdir}/${distname}" />
 	<property name="parserbasename" value="SmilesParser" />
@@ -246,7 +246,7 @@
 				<include name="overview.html" />
 				<include name="README" />
 			</tarfileset>
-			<tarfileset dir="${srcdir}" prefix="${dist}/">
+			<tarfileset dir="${srcdir}" prefix="${dist}/${srcdir}">
 				<include name="**/*.java" />
 				<include name="**/*.y" />
 				<exclude name="${builddir}/*" />
@@ -267,7 +267,7 @@
 				<include name="overview.html" />
 				<include name="README" />
 			</tarfileset>
-			<tarfileset dir="${srcdir}" prefix="${distnobison}/">
+			<tarfileset dir="${srcdir}" prefix="${distnobison}/${srcdir}">
 				<include name="**/*.java" />
 				<include name="**/*.y" />
 				<exclude name="${builddir}/**" />
@@ -276,7 +276,7 @@
 				<include name="*.jar" />
 			</tarfileset>
 			<tarfileset file="${parserbuilddir}/${parserbasename}.java" 
-				prefix="${distnobison}/${distname}/" />
+				prefix="${distnobison}/${srcdir}/${distname}" />
 		</tar>
 		<gzip destfile="${distdir}/${distnobison}.tar.gz" src="${distdir}/${distnobison}.tar" />
 	</target>

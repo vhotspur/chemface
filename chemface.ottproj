@@ -2,22 +2,22 @@ Make ant
 Tree
     Item build.xml
     Item Doxyfile
-    Item chemface/Chemface.java
+    Item src/chemface/Chemface.java
     Item overview.html
     Item README
     Folder Parser
-        Item chemface/SmilesParser.y
-        Item chemface/SmilesLexer.java
+        Item src/chemface/SmilesParser.y
+        Item src/chemface/SmilesLexer.java
     /Folder
     Folder Nodes
-        Item chemface/Node.java
-        Item chemface/NodePlacer.java
-        Item chemface/Bond.java
-        Item chemface/PositionedNode.java
+        Item src/chemface/Node.java
+        Item src/chemface/NodePlacer.java
+        Item src/chemface/Bond.java
+        Item src/chemface/PositionedNode.java
     /Folder
     Folder Rendering
-        Item chemface/Renderer.java
-        Item chemface/RenderingOptions.java
+        Item src/chemface/Renderer.java
+        Item src/chemface/RenderingOptions.java
     /Folder
     Folder Launchers
         Item launchers/chemface.sh
