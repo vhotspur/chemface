@@ -21,7 +21,7 @@
 	<property name="PREFIX" value="/usr/local/" />
 	<property name="jardir" value="${PREFIX}share/java/" />
 	<property name="myjardir" value="${jardir}${distname}/" />
-	<property name="bindir" value="${PREFIX}share/bin/" />
+	<property name="bindir" value="${PREFIX}/bin/" />
 	<property name="launchername" value="chemface" />
 	
 	
