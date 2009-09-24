@@ -180,6 +180,7 @@ private static Reactant findBestPlacement(Reactant r) {
 		p.setReactant(r);
 		boolean placingSuccess = p.placeOptimally();
 		if (placingSuccess) {
+			verboseMessage(1, " (" + p.getName() + ")", false, false);
 			return p.getReactant();
 		}
 	}

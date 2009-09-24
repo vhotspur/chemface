@@ -10,6 +10,10 @@ public class LinearReactantPlacer implements Placer {
 
 private Reactant reactant_;
 
+public String getName() {
+	return "linear";
+}
+
 public void setReactant(final Reactant r) {
 	reactant_ = (Reactant)r.clone();
 }

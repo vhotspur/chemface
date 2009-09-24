@@ -23,6 +23,10 @@ public GravitationalPlacer() {
 	
 }
 
+public String getName() {
+	return "gravitational";
+}
+
 public void setReactant(final Reactant r) {
 	graph_ = (Reactant)r.clone();
 }
