@@ -39,6 +39,12 @@ Building and running
 	* `ant docs' generates javadoc and Doxygen documentation
 	* `ant clean' cleans generated files
 	* `ant dist' creates package with source files
+Installation
+	After compiling, you may install Chemface by running `ant install'.
+By default, Chemface is installed into /usr/local/share/java/chemface and
+launchers into /usr/local/bin. You can change the prefix by defining
+PREFIX when calling ant (e.g. `ant -DPREFIX=/usr'). When building a package,
+you might want to use the DESTDIR property.
 
 
 [1] http://en.wikipedia.org/wiki/Simplified_molecular_input_line_entry_specification
