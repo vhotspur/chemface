@@ -60,9 +60,46 @@ protected PositionedNode getFirstNode() {
  * 
  */
 protected PositionedNode getLastNode(PositionedNode firstNode) {
-	// FIXME
-	return null;
+	if (firstNode == null) {
+		return null;
+	}
+	
+	java.util.Set<Bond> edges = reactant_.edgesOf(firstNode);
+	assert(edges.size() == 1);
+	
+	// move to the second in line
+	Bond usedEdge = (Bond)edges.iterator().next();
+	PositionedNode lastNode = getOtherEdgeEnd(usedEdge, firstNode);
+	while (reactant_.degreeOf(lastNode) == 2) {
+		java.util.Set<Bond> allEdges = reactant_.edgesOf(lastNode);
+		Bond newEdge = getOtherEdge(allEdges, usedEdge);
+		lastNode = getOtherEdgeEnd(newEdge, firstNode);
+		usedEdge = newEdge;
+	}
+	if (reactant_.degreeOf(lastNode) == 1) {
+		return lastNode;
+	} else {
+		return null;
+	}
 }
 
+protected PositionedNode getOtherEdgeEnd(Bond edge, PositionedNode start) {
+	PositionedNode a = reactant_.getEdgeSource(edge);
+	PositionedNode b = reactant_.getEdgeTarget(edge);
+	if (a == start) {
+		return b;
+	} else {
+		return a;
+	}
+}
+
+protected Bond getOtherEdge(java.util.Set<Bond> edges, Bond notThisEdge) {
+	for (Bond b : edges) {
+		if (b != notThisEdge) {
+			return b;
+		}
+	}
+	return null;
+}
 
 } // class LinearReactantPlacer
