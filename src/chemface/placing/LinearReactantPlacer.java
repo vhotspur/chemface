@@ -30,15 +30,21 @@ public boolean placeOptimally() {
 	}
 	
 	PositionedNode firstNode = getFirstNode();
-	PositionedNode lastNode = getLastNode(firstNode);
+	java.util.Vector<PositionedNode> path = getPath(firstNode);
 	
-	if (firstNode == null || lastNode == null) {
+	if (firstNode == null || path == null) {
 		return false;
 	}
 	
+	double fromLeft = 0;
+	for (PositionedNode node : path) {
+		node.setPosition(
+			new java.awt.geom.Point2D.Double(fromLeft, 0.)
+		);
+		fromLeft += RenderingOptions.getBondLength();
+	}
 	
-	// FIXME
-	return false;
+	return true;
 }
 
 /**
@@ -56,13 +62,15 @@ protected PositionedNode getFirstNode() {
 }
 
 /**
- * @retval null Last node could not be found.
+ * @retval null Reactant is not a path.
  * 
  */
-protected PositionedNode getLastNode(PositionedNode firstNode) {
+protected java.util.Vector<PositionedNode> getPath(PositionedNode firstNode) {
 	if (firstNode == null) {
 		return null;
 	}
+	java.util.Vector<PositionedNode> result = new java.util.Vector<PositionedNode>();
+	result.add(firstNode);
 	
 	java.util.Set<Bond> edges = reactant_.edgesOf(firstNode);
 	assert(edges.size() == 1);
@@ -71,13 +79,16 @@ protected PositionedNode getLastNode(PositionedNode firstNode) {
 	Bond usedEdge = (Bond)edges.iterator().next();
 	PositionedNode lastNode = getOtherEdgeEnd(usedEdge, firstNode);
 	while (reactant_.degreeOf(lastNode) == 2) {
+		result.add(lastNode);
+		
 		java.util.Set<Bond> allEdges = reactant_.edgesOf(lastNode);
 		Bond newEdge = getOtherEdge(allEdges, usedEdge);
-		lastNode = getOtherEdgeEnd(newEdge, firstNode);
+		lastNode = getOtherEdgeEnd(newEdge, lastNode);
 		usedEdge = newEdge;
 	}
 	if (reactant_.degreeOf(lastNode) == 1) {
-		return lastNode;
+		result.add(lastNode);
+		return result;
 	} else {
 		return null;
 	}
