@@ -230,6 +230,18 @@
 			<arg value="'CH2'='CH''CH2''CH3'" />
 		</java>
 		
+		<echo message="chemface -v -o ${samplesdir}/isobutane.png CC(C)C" />
+		<java classname="chemface.Chemface">
+			<classpath>
+				<pathelement location="${builddir}" />
+				<path refid="classpath" />
+			</classpath>
+			<arg value="-v" />
+			<arg value="-o" />
+			<arg value="${samplesdir}/isobutane.png" />
+			<arg value="CC(C)C" />
+		</java>
+		
 	</target>
 		
 	<target name="clean">
