@@ -9,8 +9,11 @@ that allows specification of arbitrary string to appear in molecule node
 
 Example usage
 -------------
-In these examples, `chemface' is a call to Java interpreter with path to 
-directory with Chemface (compiled) sources.
+In these examples, `chemface' could be either call to 
+	* Chamface launcher (if you installed Chemface to your system) 
+	* `java -jar chemface.jar' (if you created jar by `ant create-jar`)
+	* `java -cp lib/commons-cli-1.2.jar:lib:/jgrapht-jdk1.6.jar:build/ \
+		chemface.Chemface' (running from root directory of the package)
 
 $ chemface -o out.png "CCCC"
 - creates butane in out.png file
