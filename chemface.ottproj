@@ -18,6 +18,7 @@ Tree
     Folder Placing
         Item src/chemface/placing/Placer.java
         Item src/chemface/placing/GravitationalPlacer.java
+        Item src/chemface/placing/LinearReactantPlacer.java
     /Folder
     Folder Rendering
         Item src/chemface/Renderer.java

@@ -173,6 +173,7 @@ private static Reactant findBestPlacement(Reactant r) {
 	// add here all placers available
 	// only make sure that the GravitationalPlacer is the last
 	// one as this placer always succeeds in placing
+	placers.add(new LinearReactantPlacer());
 	placers.add(new GravitationalPlacer());
 	
 	for (Placer p : placers) {
