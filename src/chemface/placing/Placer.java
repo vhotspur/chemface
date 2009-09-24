@@ -5,6 +5,15 @@ import chemface.*;
 public interface Placer {
 
 /**
+ * Tells name of the placer.
+ * 
+ * This name shall be human-readable and shall give some information
+ * how the algorithm works.
+ * 
+ */
+public String getName();
+
+/**
  * Sets reactant to be used for placing.
  *
  * @warning This method must copy the reactant.
