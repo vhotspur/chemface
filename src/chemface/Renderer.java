@@ -7,7 +7,7 @@ package chemface;
 class Renderer {
 
 /// Nodes of the formulae
-private NodePlacer nodes;
+private Reactant nodes;
 /// Result image
 private java.awt.image.BufferedImage image_ = null;
 
@@ -17,7 +17,7 @@ private java.awt.image.BufferedImage image_ = null;
  * @param placedNodes Already positioned nodes of the chemical structure
  * 
  */
-public Renderer(NodePlacer placedNodes) {
+public Renderer(Reactant placedNodes) {
 	nodes = placedNodes;
 }
 

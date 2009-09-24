@@ -30,11 +30,11 @@
 }
 
 %code {
-	private NodePlacer graph;
+	private Reactant graph;
 	
 	private PositionedNode lastNode;
 	
-	public NodePlacer getNodes() {
+	public Reactant getNodes() {
 		return graph;
 	}
 	
@@ -49,7 +49,7 @@
 	 * @param bond Bond used for joining
 	 * 
 	 */
-	public void joinGraphs(NodePlacer a, NodePlacer b,
+	public void joinGraphs(Reactant a, Reactant b,
 			PositionedNode joinerA, PositionedNode joinerB,
 			Bond bond) {
 		for (PositionedNode vertex : b.vertexSet()) {
@@ -141,7 +141,7 @@ formula_without_branches:
 		$$.firstNode = $1.firstNode;
 	}} 
 	| element {{
-		$$.graph = new NodePlacer();
+		$$.graph = new Reactant();
 		$$.graph.addVertex($1.node);
 		$$.firstNode = $1.node;
 		$$.lastNode = $1.node;

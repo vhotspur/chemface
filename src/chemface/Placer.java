@@ -1,14 +1,14 @@
 package chemface;
 
 /**
- * NodePlacer takes care of fine node placing.
+ * Takes care of fine node placing.
  * 
  * The algorithm was taken from 
  * http://en.wikipedia.org/wiki/Force-based_algorithms#Pseudocode, constants
  * were enumerated experimentally.
  * 
  */
-public class NodePlacer extends org.jgrapht.graph.SimpleGraph<PositionedNode, Bond> implements Cloneable {
+public class Placer  {
 
 /// Initial random shift (fine tunning node placement)
 private final double randomShiftCoefficient = 1.0;
@@ -22,23 +22,17 @@ private final double timeStep = 0.9;
 private final double damping = 0.9;
 /// Limit of kinetic energy when the movement - simulation - stops (fine tunning node placement)
 private final double energyEpsilon = 0.0001;
+/// Reactant to be positioned
+private Reactant reactant;
 
 /**
  * Default constructor.
  * 
- */
-public NodePlacer() {
-	super(Bond.class);
-}
-
-/**
- * Clones the graph.
- * 
- * @warning The parent class makes a shallow copy!
+ * @param r Reactant to be placed.
  * 
  */
-public Object clone() {
-	return super.clone();
+public Placer(Reactant r) {
+	reactant = r;
 }
 
 /**
@@ -104,7 +98,7 @@ public java.awt.geom.Point2D.Double getHookeForceVector(PositionedNode fixed,
 public void findOptimalPlacement() {
 	// http://en.wikipedia.org/wiki/Force-based_algorithms#Pseudocode
 	
-	for (PositionedNode node : vertexSet()) {
+	for (PositionedNode node : reactant.vertexSet()) {
 		node.setVelocity(new java.awt.geom.Point2D.Double(0.0, 0.0));
 	}
 	shiftAllRandomly(); shiftAllRandomly();
@@ -112,27 +106,27 @@ public void findOptimalPlacement() {
 	double totalKineticEnergy;
 	do {
 		// count new forces
-		for (PositionedNode node : vertexSet()) {
+		for (PositionedNode node : reactant.vertexSet()) {
 			node.resetGravityForces();
 			
-			for (PositionedNode other : vertexSet()) {
+			for (PositionedNode other : reactant.vertexSet()) {
 				if (other == node) {
 					continue;
 				}
 				
 				node.addGravityForce(getCoulombForceVector(other, node));
 				
-				if (containsEdge(node, other)) {
+				if (reactant.containsEdge(node, other)) {
 					node.addGravityForce(getHookeForceVector(
 						other, node,
-						getEdge(node, other).optimalLength()));
+						reactant.getEdge(node, other).optimalLength()));
 				}
 			} // for each other node
 		}
 		
 		// set the new forces and velocities
 		totalKineticEnergy = 0.0;
-		for (PositionedNode node : vertexSet()) {
+		for (PositionedNode node : reactant.vertexSet()) {
 			//System.out.printf("another node!\n");
 			node.recountPositionAndVelocity(damping, timeStep);
 			totalKineticEnergy += node.getKineticEnergy();
@@ -146,7 +140,7 @@ public void findOptimalPlacement() {
  * 
  */
 protected void shiftAllRandomly() {
-	java.util.Set<PositionedNode> vertices = vertexSet();
+	java.util.Set<PositionedNode> vertices = reactant.vertexSet();
 	java.util.Random rnd = new java.util.Random(0); // make it deterministic between runs
 	for (PositionedNode node : vertices) {
 		if (node.fixed) {
@@ -163,16 +157,16 @@ protected void shiftAllRandomly() {
  * 
  */
 public void dumpPositions() {
-	java.util.Set<PositionedNode> vertices = vertexSet();
+	java.util.Set<PositionedNode> vertices = reactant.vertexSet();
 	StringBuilder result = new StringBuilder("");
 	for (PositionedNode node : vertices) {
 		result.append(String.format("%-3s (%6.2f, %6.2f)::",
 			node.toString(), node.getX(), node.getY()));
-		for (PositionedNode other : vertexSet()) {
-			if (!containsEdge(node, other)) {
+		for (PositionedNode other : reactant.vertexSet()) {
+			if (!reactant.containsEdge(node, other)) {
 				continue;
 			}
-			double optDist = getEdge(node, other).optimalLength();
+			double optDist = reactant.getEdge(node, other).optimalLength();
 			double dist = node.distance(other);
 			result.append(String.format(" %3s(%6.2f %6.2f) ",
 				other.toString(),
@@ -183,20 +177,6 @@ public void dumpPositions() {
 	System.out.println(result.toString());
 }
 
-/**
- * Copy nodes to edges to allow proper bond rendering.
- * 
- */
-public void copyNodesToEdges() {
-	for (PositionedNode node : vertexSet()) {
-		for (PositionedNode other : vertexSet()) {
-			if (!containsEdge(node, other)) {
-				continue;
-			}
-			getEdge(node, other).setNodes(node, other);
-		}
-	}
-}
 
 
 }

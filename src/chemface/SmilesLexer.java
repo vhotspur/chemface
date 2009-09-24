@@ -37,7 +37,7 @@ public class Context {
 	/// Reference number for cycles
 	public int refNo = 0;
 	/// (Sub)graph storage
-	public NodePlacer graph = null;
+	public Reactant graph = null;
 	/// First node of the graph (used when adding nodes)
 	public PositionedNode firstNode = null;
 	/// Last node of the graph (used when adding nodes)
@@ -60,7 +60,7 @@ public class Context {
 			cl.node = (PositionedNode)node.clone();
 		}
 		if (graph != null) {
-			cl.graph = (NodePlacer)graph.clone();
+			cl.graph = (Reactant)graph.clone();
 		}
 		if (firstNode != null) {
 			cl.firstNode = (PositionedNode)firstNode.clone();

@@ -116,14 +116,15 @@ public static void main(String[] args) throws java.io.IOException {
 	}
 	
 	verboseMessageStart(1, "Positioning nodes...");
-	NodePlacer placer = parser.getNodes();
+	Reactant reactant = parser.getNodes();
+	Placer placer = new Placer(reactant);
 	
 	placer.findOptimalPlacement();
-	placer.copyNodesToEdges();
+	reactant.copyNodesToEdges();
 	verboseMessageEnd(1, " [done]");
 
 	verboseMessageStart(1, "Rendering...");
-	Renderer renderer = new Renderer(placer);
+	Renderer renderer = new Renderer(reactant);
 	renderer.render();
 	verboseMessageEnd(1, " [done]");
 	
