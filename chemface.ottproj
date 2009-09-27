@@ -14,7 +14,11 @@ Tree
         Item src/chemface/PositionedNode.java
         Item src/chemface/Bond.java
         Item src/chemface/Reactant.java
-        Item src/chemface/Placer.java
+    /Folder
+    Folder Placing
+        Item src/chemface/placing/Placer.java
+        Item src/chemface/placing/GravitationalPlacer.java
+        Item src/chemface/placing/LinearReactantPlacer.java
     /Folder
     Folder Rendering
         Item src/chemface/Renderer.java

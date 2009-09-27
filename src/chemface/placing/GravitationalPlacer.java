@@ -1,15 +1,9 @@
-package chemface;
+package chemface.placing;
 
-/**
- * Takes care of fine node placing.
- * 
- * The algorithm was taken from 
- * http://en.wikipedia.org/wiki/Force-based_algorithms#Pseudocode, constants
- * were enumerated experimentally.
- * 
- */
-public class Placer  {
+import chemface.*;
 
+public class GravitationalPlacer implements Placer {
+	
 /// Initial random shift (fine tunning node placement)
 private final double randomShiftCoefficient = 1.0;
 /// Hooke's constant (fine tunning node placement)
@@ -23,16 +17,22 @@ private final double damping = 0.9;
 /// Limit of kinetic energy when the movement - simulation - stops (fine tunning node placement)
 private final double energyEpsilon = 0.0001;
 /// Reactant to be positioned
-private Reactant reactant;
+private Reactant graph_ = null;
+	
+public GravitationalPlacer() {
+	
+}
 
-/**
- * Default constructor.
- * 
- * @param r Reactant to be placed.
- * 
- */
-public Placer(Reactant r) {
-	reactant = r;
+public String getName() {
+	return "gravitational";
+}
+
+public void setReactant(final Reactant r) {
+	graph_ = (Reactant)r.clone();
+}
+
+public Reactant getReactant() {
+	return graph_;
 }
 
 /**
@@ -95,10 +95,10 @@ public java.awt.geom.Point2D.Double getHookeForceVector(PositionedNode fixed,
  * Finds optimal placement for the nodes in the graph.
  * 
  */
-public void findOptimalPlacement() {
+public boolean placeOptimally() {
 	// http://en.wikipedia.org/wiki/Force-based_algorithms#Pseudocode
 	
-	for (PositionedNode node : reactant.vertexSet()) {
+	for (PositionedNode node : graph_.vertexSet()) {
 		node.setVelocity(new java.awt.geom.Point2D.Double(0.0, 0.0));
 	}
 	shiftAllRandomly(); shiftAllRandomly();
@@ -106,33 +106,36 @@ public void findOptimalPlacement() {
 	double totalKineticEnergy;
 	do {
 		// count new forces
-		for (PositionedNode node : reactant.vertexSet()) {
+		for (PositionedNode node : graph_.vertexSet()) {
 			node.resetGravityForces();
 			
-			for (PositionedNode other : reactant.vertexSet()) {
+			for (PositionedNode other : graph_.vertexSet()) {
 				if (other == node) {
 					continue;
 				}
 				
 				node.addGravityForce(getCoulombForceVector(other, node));
 				
-				if (reactant.containsEdge(node, other)) {
+				if (graph_.containsEdge(node, other)) {
 					node.addGravityForce(getHookeForceVector(
 						other, node,
-						reactant.getEdge(node, other).optimalLength()));
+						graph_.getEdge(node, other).optimalLength()));
 				}
 			} // for each other node
 		}
 		
 		// set the new forces and velocities
 		totalKineticEnergy = 0.0;
-		for (PositionedNode node : reactant.vertexSet()) {
+		for (PositionedNode node : graph_.vertexSet()) {
 			//System.out.printf("another node!\n");
 			node.recountPositionAndVelocity(damping, timeStep);
 			totalKineticEnergy += node.getKineticEnergy();
 		}
 		//System.out.printf("totalKineticEnergy=%f\n", totalKineticEnergy);
 	} while (totalKineticEnergy > energyEpsilon);
+	
+	// this method works always
+	return true;
 }
 
 /**
@@ -140,7 +143,7 @@ public void findOptimalPlacement() {
  * 
  */
 protected void shiftAllRandomly() {
-	java.util.Set<PositionedNode> vertices = reactant.vertexSet();
+	java.util.Set<PositionedNode> vertices = graph_.vertexSet();
 	java.util.Random rnd = new java.util.Random(0); // make it deterministic between runs
 	for (PositionedNode node : vertices) {
 		if (node.fixed) {
@@ -157,16 +160,16 @@ protected void shiftAllRandomly() {
  * 
  */
 public void dumpPositions() {
-	java.util.Set<PositionedNode> vertices = reactant.vertexSet();
+	java.util.Set<PositionedNode> vertices = graph_.vertexSet();
 	StringBuilder result = new StringBuilder("");
 	for (PositionedNode node : vertices) {
 		result.append(String.format("%-3s (%6.2f, %6.2f)::",
 			node.toString(), node.getX(), node.getY()));
-		for (PositionedNode other : reactant.vertexSet()) {
-			if (!reactant.containsEdge(node, other)) {
+		for (PositionedNode other : graph_.vertexSet()) {
+			if (!graph_.containsEdge(node, other)) {
 				continue;
 			}
-			double optDist = reactant.getEdge(node, other).optimalLength();
+			double optDist = graph_.getEdge(node, other).optimalLength();
 			double dist = node.distance(other);
 			result.append(String.format(" %3s(%6.2f %6.2f) ",
 				other.toString(),
@@ -178,5 +181,4 @@ public void dumpPositions() {
 }
 
 
-
-}
+} // class GravitationalPlacer

@@ -8,6 +8,7 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.ParseException;
+import chemface.placing.*;
 
 /**
  * Main class of the Chemface.
@@ -117,9 +118,7 @@ public static void main(String[] args) throws java.io.IOException {
 	
 	verboseMessageStart(1, "Positioning nodes...");
 	Reactant reactant = parser.getNodes();
-	Placer placer = new Placer(reactant);
-	
-	placer.findOptimalPlacement();
+	reactant = findBestPlacement(reactant);
 	reactant.copyNodesToEdges();
 	verboseMessageEnd(1, " [done]");
 
@@ -165,6 +164,29 @@ private static void verboseMessage(int level, String message,
 		displayStartingDecorator ? "[chemface]: " : "",
 		message,
 		terminateLine ? "\n" : "");
+}
+
+
+private static Reactant findBestPlacement(Reactant r) {
+	java.util.Vector<Placer> placers = 
+		new java.util.Vector<Placer>();
+	// add here all placers available
+	// only make sure that the GravitationalPlacer is the last
+	// one as this placer always succeeds in placing
+	placers.add(new LinearReactantPlacer());
+	placers.add(new GravitationalPlacer());
+	
+	for (Placer p : placers) {
+		p.setReactant(r);
+		boolean placingSuccess = p.placeOptimally();
+		if (placingSuccess) {
+			verboseMessage(1, " (" + p.getName() + ")", false, false);
+			return p.getReactant();
+		}
+	}
+	
+	// fallback, we shall never get here
+	return r;
 }
 
 } // class Chemface
